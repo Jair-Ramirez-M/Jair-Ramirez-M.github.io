@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Análisis Financiero Interactivo — ANDRITZ Hydro Ltda. 2024-2025</title>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1b2a4a;--teal:#00b4d8;--green:#21c97a;--amber:#f59e0b;
+  --red:#ef4444;--purple:#8b5cf6;--blue:#3b82f6;--gray:#c9d4e8;
+  --bg:#f0f2f5;--white:#fff;--border:#e5e8ef;
+  --text:#252423;--muted:#888;--soft:#555;
+  --transition:.18s ease;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.45;padding-top:155px}
+
+.inst-header{position:fixed;top:0;left:0;right:0;z-index:110;background:linear-gradient(135deg,#2d6a2f 0%,#1e5230 35%,#1b3a6b 70%,#1b2a4a 100%);border-bottom:2px solid rgba(0,180,216,.4);padding:7px 20px;display:flex;align-items:center;gap:12px}
+.inst-text{display:flex;flex-direction:column;gap:3px;flex:1}
+.inst-line1{font-size:12.5px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.inst-line1::before{content:'';display:inline-block;width:14px;height:14px;border-radius:2px;background:linear-gradient(135deg,#4caf50,#00b4d8);flex-shrink:0}
+.inst-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.inst-tag{font-size:11px;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:2px 9px}
+.inst-author{font-size:11.5px;color:rgba(255,255,255,.8)}
+
+.topbar{background:var(--navy);padding:0 20px;height:42px;display:flex;align-items:center;gap:16px;position:fixed;top:72px;left:0;right:0;z-index:109}
+.tb-logo{color:var(--teal);font-weight:800;font-size:14px;letter-spacing:.6px}
+.tb-title{color:#c9d6e8;font-size:13px}
+.tb-meta{color:#8fa8c8;font-size:11.5px;margin-left:auto}
+
+.nav{background:var(--white);border-bottom:1.5px solid var(--border);display:flex;gap:0;padding:0 14px;position:fixed;top:114px;left:0;right:0;z-index:108;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{padding:10px 15px;font-size:11.5px;font-weight:600;color:var(--muted);border:none;background:transparent;cursor:pointer;border-bottom:2.5px solid transparent;transition:all var(--transition);white-space:nowrap;flex-shrink:0}
+.nav-btn.active{color:var(--navy);border-bottom-color:var(--teal)}
+.nav-btn:hover:not(.active){color:#333;background:#f5f7fa}
+.nav-sep{width:1px;background:var(--border);margin:8px 4px;flex-shrink:0}
+
+.page{display:none;padding:16px 18px 28px;opacity:0;transition:opacity .2s ease}
+.page.active{display:block;opacity:1}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.kpi-strip{display:grid;gap:9px;margin-bottom:12px;position:relative}
+.kpi-strip.s6{grid-template-columns:repeat(6,1fr)}
+.kpi-strip.s4{grid-template-columns:repeat(4,1fr)}
+.kpi-strip.s3{grid-template-columns:repeat(3,1fr)}
+.kpi-strip.s5{grid-template-columns:repeat(5,1fr)}
+
+.kpi-card{
+  background:var(--white);
+  border-radius:9px;
+  padding:13px 14px 11px;
+  border:1px solid var(--border);
+  border-top:3px solid var(--kc,var(--teal));   
+  position:relative;
+  overflow:visible;                              
+  cursor:default;
+  transition:box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+}
+.kpi-card:hover{
+  box-shadow:0 8px 24px rgba(0,0,0,.13);
+  transform:translateY(-2px);
+  z-index:10;
+  position:relative; 
+}
+.kpi-card.tl-ok  {border-top-color:var(--green); border-color:#bbf7d0}
+.kpi-card.tl-warn{border-top-color:var(--amber); border-color:#fcd34d}
+.kpi-card.tl-alert{border-top-color:var(--red);  border-color:#fca5a5}
+.kpi-card.tl-info{border-top-color:var(--blue);  border-color:#93c5fd}
+
+.kpi-tl{
+  position:absolute;top:10px;right:10px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--muted);
+  transition:background .2s, box-shadow .2s;
+}
+.tl-ok  .kpi-tl{background:var(--green);box-shadow:0 0 7px rgba(33,201,122,.6)}
+.tl-warn .kpi-tl{background:var(--amber);box-shadow:0 0 7px rgba(245,158,11,.6)}
+.tl-alert .kpi-tl{background:var(--red);  box-shadow:0 0 7px rgba(239,68,68,.6)}
+.tl-info  .kpi-tl{background:var(--blue); box-shadow:0 0 7px rgba(59,130,246,.5)}
+
+.tl-alert .kpi-tl{animation:pulse-dot 1.8s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 4px rgba(239,68,68,.5)}50%{box-shadow:0 0 12px rgba(239,68,68,.9)}}
+
+.kc-lbl{font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;padding-right:18px}
+.kc-val{font-size:22px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:4px}
+.kc-val.md{font-size:18px}
+.kc-val.sm{font-size:15px}
+.kc-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kc-prev{font-size:10.5px;color:#bbb}
+.chip{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:7px}
+.chip.up{background:#e6fff5;color:#16a34a}
+.chip.dn{background:#fff1f0;color:#dc2626}
+.chip.neu{background:#f0f4ff;color:#4b5fa6}
+
+#kpiTooltip{
+  position:fixed;
+  z-index:99999;
+  background:#1b2a4a;
+  color:#fff;
+  font-size:11.5px;
+  font-weight:500;
+  line-height:1.55;
+  padding:9px 13px;
+  border-radius:8px;
+  max-width:240px;
+  text-align:center;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity .16s ease, transform .16s ease;
+  box-shadow:0 6px 20px rgba(0,0,0,.28);
+  white-space:normal;
+}
+#kpiTooltip.show{opacity:1;transform:translateY(0)}
+#kpiTooltip::after{
+  content:'';
+  position:absolute;
+  top:100%;left:50%;
+  transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:#1b2a4a;
+}
+
+.slide-logic{background:linear-gradient(135deg,#0f172a,#1b2a4a);border-radius:10px;padding:18px 20px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden}
+.slide-logic::before{content:'';position:absolute;top:10px;right:14px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:rgba(0,180,216,.6)}
+.sl-grid{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;align-items:stretch}
+.sl-div{background:rgba(255,255,255,.08);width:1px;margin:0 16px}
+.sl-block{padding:0 4px}
+.sl-tag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;display:inline-flex;align-items:center;gap:5px}
+.sl-tag.assert{color:var(--teal)}
+.sl-tag.evid{color:var(--amber)}
+.sl-tag.impl{color:var(--green)}
+.sl-heading{font-size:14px;font-weight:800;color:#fff;line-height:1.35;margin-bottom:8px}
+.sl-body{font-size:11.5px;color:rgba(255,255,255,.7);line-height:1.6}
+.sl-body strong{color:#fff}
+.sl-number{font-size:28px;font-weight:900;color:var(--teal);line-height:1;margin-bottom:3px}
+.sl-number.warn{color:var(--amber)}
+.sl-number.alert{color:var(--red)}
+
+
+.wf-container{position:relative;width:100%;overflow:hidden}
+.wf-svg{width:100%;display:block}
+
+.filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.filter-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.filter-btn{padding:4px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);font-size:11.5px;font-weight:600;color:#555;cursor:pointer;transition:all .12s}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.filter-btn:hover:not(.active){background:#f5f7fa;border-color:#c9d4e8}
+
+.grid{display:grid;gap:12px;margin-bottom:12px;position:relative}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g6040{grid-template-columns:6fr 4fr}
+.g4060{grid-template-columns:4fr 6fr}
+.g7030{grid-template-columns:7fr 3fr}
+.full{margin-bottom:12px}
+
+.panel{background:var(--white);border-radius:9px;border:1px solid var(--border);padding:14px 16px}
+.panel-hd{margin-bottom:10px}
+.panel-title{font-size:11.5px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.45px}
+.panel-sub{font-size:10.5px;color:#aaa;margin-top:2px}
+.chart-wrap{position:relative;width:100%}
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 3px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#666}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+.wfall{display:flex;flex-direction:column;gap:0;width:100%}
+.wf-row{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px solid #f5f7fa}
+.wf-row:last-child{border-bottom:none}
+.wf-row.total-row{background:#f0f4ff;margin:3px -16px;padding:5px 16px;border-radius:4px}
+.wf-lbl{width:140px;font-size:11.5px;color:var(--soft);flex-shrink:0;font-weight:500}
+.wf-lbl.bold{font-weight:700;color:var(--navy)}
+.wf-area{flex:1;position:relative;height:20px}
+.wf-spacer{position:absolute;top:0;bottom:0;background:transparent}
+.wf-bar{position:absolute;top:2px;height:16px;border-radius:2px;display:flex;align-items:center;padding:0 5px;font-size:10px;font-weight:700;color:#fff;overflow:hidden;transition:width .4s ease}
+.wf-val{width:80px;font-size:11.5px;font-weight:700;text-align:right;flex-shrink:0}
+.wf-val.pos{color:#16a34a}
+.wf-val.neg{color:#dc2626}
+.wf-val.neu{color:var(--navy)}
+
+.tw{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:12px}
+table.t th{background:var(--navy);color:#fff;font-weight:700;padding:8px 10px;text-align:right;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;border-right:1px solid rgba(255,255,255,.1)}
+table.t th:first-child{text-align:left;border-radius:4px 0 0 0}
+table.t th:last-child{border-radius:0 4px 0 0;border-right:none}
+table.t td{padding:7px 10px;border-bottom:1px solid #f0f2f5;text-align:right;color:#333;vertical-align:top}
+table.t td:first-child{text-align:left;font-weight:600;color:var(--navy)}
+table.t tr:hover td{background:#f8fafd}
+table.t .pos{color:#16a34a;font-weight:700}
+table.t .neg{color:#dc2626;font-weight:700}
+table.t .sub{color:var(--soft);font-weight:400;font-size:11.5px;line-height:1.5;text-align:left}
+table.t tr.hdr td{background:#f0f4ff;font-weight:800;color:var(--navy);font-size:12.5px}
+table.t tr.sub-hdr td{background:#f8fafd;font-weight:700;color:#444}
+
+.ind-kpis{display:grid;gap:8px;margin-bottom:12px;position:relative}
+.ind-kpis.k5{grid-template-columns:repeat(5,1fr)}
+.ind-kpis.k4{grid-template-columns:repeat(4,1fr)}
+.ind-kpi{background:var(--white);border-radius:7px;border:1px solid var(--border);border-top:3px solid var(--c,var(--teal));padding:11px 13px;position:relative;overflow:visible;transition:box-shadow .15s,transform .15s}
+.ind-kpi:hover{box-shadow:0 8px 22px rgba(0,0,0,.12);transform:translateY(-2px);z-index:10;position:relative}
+
+.ind-kpi.tl-ok  {border-color:#bbf7d0;border-top-color:var(--green)}
+.ind-kpi.tl-warn{border-color:#fcd34d;border-top-color:var(--amber)}
+.ind-kpi.tl-alert{border-color:#fca5a5;border-top-color:var(--red)}
+.ik-lbl{font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.ik-val{font-size:20px;font-weight:800;color:var(--navy);line-height:1}
+.ik-prev{font-size:10px;color:#bbb;margin-top:2px}
+.ik-delta{font-size:10.5px;font-weight:700;margin-top:2px}
+.ik-delta.up{color:#16a34a}.ik-delta.dn{color:#dc2626}.ik-delta.neu{color:var(--muted)}
+.ik-formula{font-size:9px;color:#ccc;font-style:italic;margin-top:1px;display:block}
+
+.ind-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.ind-table thead tr{background:var(--navy)}
+.ind-table th{color:#fff;font-weight:700;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.3px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.ind-table th:first-child{text-align:left}.ind-table th:last-child{border-right:none}
+.ind-table td{padding:7px 10px;border-bottom:1px solid #eef0f5;vertical-align:middle;color:#333}
+.ind-table td:first-child{font-weight:700;color:var(--navy)}
+.ind-table td.cn{text-align:center;font-weight:700;font-size:12.5px}
+.ind-table td.ci{font-size:11px;color:var(--soft);line-height:1.5}
+.ind-table tbody tr:nth-child(even){background:#f9fbfd}
+.ind-table tbody tr:hover td{background:#eef4fc}
+.ind-formula{font-size:9.5px;color:#bbb;font-style:italic;display:block;margin-top:1px}
+.badge{display:inline-block;padding:2px 8px;border-radius:7px;font-size:10px;font-weight:700;white-space:nowrap}
+.badge.ok{background:#dcfce7;color:#15803d}
+.badge.warn{background:#fef9c3;color:#92400e}
+.badge.alert{background:#fee2e2;color:#b91c1c}
+.badge.info{background:#dbeafe;color:#1d4ed8}
+
+.hbars{display:flex;flex-direction:column;gap:7px;padding:2px 0}
+.hb-row{display:flex;align-items:center;gap:8px}
+.hb-lbl{font-size:11px;color:var(--soft);width:130px;flex-shrink:0;text-align:right;font-weight:500}
+.hb-track{flex:1;height:22px;background:#f0f2f5;border-radius:3px;overflow:hidden}
+.hb-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding:0 7px;font-size:10px;font-weight:700;color:#fff;min-width:2px;transition:width .5s ease}
+.hb-val{width:58px;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;text-align:right}
+.hb-note{font-size:10.5px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid #f0f2f5;line-height:1.5}
+
+.bullet-wrap{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.bullet-row{display:flex;align-items:center;gap:8px}
+.bullet-lbl{width:130px;font-size:11px;color:#444;flex-shrink:0}
+.bullet-track{flex:1;height:20px;background:#eef0f5;border-radius:3px;overflow:hidden;position:relative}
+.bullet-bg{position:absolute;top:4px;bottom:4px;border-radius:2px;background:#c9d4e8;opacity:.7}
+.bullet-fg{position:absolute;top:0;bottom:0;border-radius:3px}
+.bullet-val{width:65px;font-size:11px;font-weight:700;text-align:right;flex-shrink:0}
+.tr-group{display:flex;flex-direction:column;gap:3px}
+.tr-row{display:flex;align-items:center;gap:8px}
+.tr-lbl{width:120px;font-size:10.5px;flex-shrink:0;text-align:right}
+.tr-lbl.yr{font-size:9.5px;color:#999;font-weight:600}
+.tr-track{flex:1;height:14px;background:#f0f2f5;border-radius:3px;overflow:hidden}
+.tr-bar{height:100%;border-radius:3px;transition:width .5s ease}
+.tr-val{width:72px;font-size:10.5px;font-weight:700;text-align:right;flex-shrink:0;color:var(--navy)}
+.tr-pct{width:58px;font-size:11px;font-weight:800;text-align:right;flex-shrink:0}
+.tr-sep{height:1px;background:#f0f2f5;margin:2px 0}
+
+.scorecard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;position:relative}
+.sc{border-radius:8px;padding:12px 14px;border:2px solid;text-align:center;position:relative;transition:transform .15s,box-shadow .15s}
+.sc:hover{transform:scale(1.03) translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.13);z-index:10}
+.sc.ok{background:#f0fdf4;border-color:#86efac}
+.sc.warn{background:#fffbeb;border-color:#fcd34d}
+.sc.alert{background:#fef2f2;border-color:#fca5a5}
+.sc.info{background:#eff6ff;border-color:#93c5fd}
+.sc-dim{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
+.sc-val{font-size:19px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:3px}
+.sc-sig{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:8px;display:inline-block}
+.sc.ok .sc-sig{background:#dcfce7;color:#15803d}
+.sc.warn .sc-sig{background:#fef9c3;color:#92400e}
+.sc.alert .sc-sig{background:#fee2e2;color:#b91c1c}
+.sc.info .sc-sig{background:#dbeafe;color:#1d4ed8}
+
+.narrative{background:linear-gradient(135deg,#f8fafd,#eef4fb);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:12px}
+.narrative h4{font-size:11.5px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.narrative p{font-size:12.5px;color:#2c3e50;line-height:1.7;margin-bottom:7px}
+.narrative p:last-child{margin-bottom:0}
+.narrative strong{color:var(--navy)}
+
+.foda{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;position:relative}
+.foda-card{border-radius:8px;padding:13px 15px;border:1px solid}
+.foda-card.f{background:#f0fdf4;border-color:#bbf7d0}
+.foda-card.o{background:#fff7ed;border-color:#fed7aa}
+.foda-card.d{background:#eff6ff;border-color:#bfdbfe}
+.foda-card.a{background:#fef2f2;border-color:#fecaca}
+.foda-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.foda-ttl{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.foda-ttl.g{color:#15803d}.foda-ttl.o{color:#c2410c}.foda-ttl.b{color:#1d4ed8}.foda-ttl.r{color:#b91c1c}
+.foda-chip{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:7px}
+.foda-card.f .foda-chip{background:#dcfce7;color:#15803d}
+.foda-card.o .foda-chip{background:#ffedd5;color:#c2410c}
+.foda-card.d .foda-chip{background:#dbeafe;color:#1d4ed8}
+.foda-card.a .foda-chip{background:#fee2e2;color:#b91c1c}
+.foda-item{font-size:11.5px;color:#444;padding:3px 0;display:flex;gap:6px;align-items:flex-start;line-height:1.45}
+.foda-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+
+.prosp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;position:relative}
+.prosp-card{background:var(--white);border-radius:8px;border:1px solid var(--border);padding:13px 14px;border-top:3px solid}
+.prosp-card.sh{border-top-color:var(--teal)}.prosp-card.md{border-top-color:var(--amber)}.prosp-card.lg{border-top-color:var(--purple)}
+.prosp-hz{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.prosp-ttl{font-size:12px;font-weight:800;color:var(--navy);margin-bottom:7px}
+.prosp-item{font-size:11.5px;color:var(--soft);padding:2.5px 0;display:flex;gap:6px;align-items:flex-start;line-height:1.45}
+.prosp-arr{color:var(--teal);font-weight:800;flex-shrink:0;font-size:13px}
+
+.recom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative}
+.recom{background:var(--white);border-radius:8px;border:1px solid var(--border);padding:14px;display:flex;gap:12px;align-items:flex-start;position:relative;transition:box-shadow .15s}
+.recom:hover{box-shadow:0 4px 14px rgba(0,0,0,.07);z-index:10;position:relative}
+.recom-n{font-size:30px;font-weight:800;color:#e8edf5;flex-shrink:0;line-height:1;width:38px}
+.recom-ttl{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.recom-txt{font-size:11.5px;color:#666;line-height:1.55}
+.recom-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:6px;text-transform:uppercase;letter-spacing:.3px}
+.rb-red{background:#fef2f2;color:#b91c1c}
+.rb-amber{background:#fffbeb;color:#92400e}
+.rb-green{background:#f0fdf4;color:#15803d}
+
+.causal-wf{display:flex;align-items:stretch;gap:0;margin:14px 0 8px;position:relative;overflow:visible}
+.cw-step{flex:1;display:flex;flex-direction:column;position:relative;overflow:visible}
+.cw-box{flex:1;border-radius:8px;padding:12px 10px;text-align:center;border:2px solid;transition:transform .15s,box-shadow .15s,z-index 0s;position:relative;overflow:visible;cursor:default}
+.cw-box:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.13);z-index:10}
+.cw-box.pos{background:#f0fdf4;border-color:#86efac}
+.cw-box.neg{background:#fef2f2;border-color:#fca5a5}
+.cw-box.res{background:#eff6ff;border-color:#93c5fd}
+.cw-box.warn{background:#fffbeb;border-color:#fcd34d}
+.cw-icon{font-size:16px;margin-bottom:3px}
+.cw-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:4px}
+.cw-val{font-size:16px;font-weight:800;color:var(--navy);line-height:1}
+.cw-delta{font-size:10px;font-weight:700;margin-top:3px}
+.cw-delta.up{color:#16a34a}.cw-delta.dn{color:#dc2626}
+.cw-cause{font-size:10px;color:var(--soft);line-height:1.4;margin-top:4px}
+.cw-connector{display:flex;align-items:center;justify-content:center;padding:0 4px;font-size:22px;font-weight:900;color:#c9d4e8;flex-shrink:0;min-width:28px}
+
+.epc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.epc-card{border-radius:8px;padding:13px 15px;background:var(--white);border:1px solid var(--border);border-left:4px solid var(--c,var(--teal))}
+.epc-ttl{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.epc-val{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.epc-desc{font-size:11.5px;color:var(--soft);line-height:1.5}
+
+.bm-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.bm-table th{background:#f5f7fa;color:var(--soft);font-weight:700;padding:7px 10px;text-align:center;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;border-bottom:1.5px solid var(--border)}
+.bm-table th:first-child{text-align:left}
+.bm-table td{padding:7px 10px;border-bottom:1px solid #f0f2f5;text-align:center;color:#333;font-size:12px}
+.bm-table td:first-child{text-align:left;font-weight:600;color:var(--navy)}
+.bm-ok{color:#16a34a;font-weight:700}
+.bm-warn{color:#92400e;font-weight:700;background:#fffbeb}
+.bm-alert{color:#b91c1c;font-weight:700;background:#fef2f2}
+.bm-sector{color:var(--muted);font-style:italic}
+.bm-table tr:hover td{background:#f8fafd}
+
+.risk-rank{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;position:relative}
+.rr-item{display:flex;align-items:flex-start;gap:12px;background:var(--white);border-radius:8px;border:1px solid var(--border);padding:12px 14px;border-left:4px solid;position:relative;transition:box-shadow .15s}
+.rr-item:hover{box-shadow:0 4px 14px rgba(0,0,0,.07);z-index:10;position:relative}
+.rr-item.crit{border-left-color:var(--red)}
+.rr-item.high{border-left-color:var(--amber)}
+.rr-item.med{border-left-color:var(--blue)}
+.rr-item.low{border-left-color:var(--green)}
+.rr-rank{font-size:28px;font-weight:900;color:#e8edf5;flex-shrink:0;line-height:1;width:34px;text-align:center}
+.rr-body{flex:1}
+.rr-header{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.rr-ttl{font-size:13px;font-weight:800;color:var(--navy)}
+.rr-chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px}
+.rr-item.crit .rr-chip{background:#fee2e2;color:#b91c1c}
+.rr-item.high .rr-chip{background:#ffedd5;color:#c2410c}
+.rr-item.med .rr-chip{background:#dbeafe;color:#1d4ed8}
+.rr-item.low .rr-chip{background:#dcfce7;color:#15803d}
+.rr-cause{font-size:11.5px;color:#666;line-height:1.55;margin-bottom:4px}
+.rr-metric{display:flex;flex-wrap:wrap;gap:8px;margin-top:5px}
+.rr-m{font-size:10.5px;background:#f5f7fa;border:1px solid var(--border);border-radius:6px;padding:2px 8px;color:#444;font-weight:600}
+.rr-impact{font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;text-align:right;min-width:90px;margin-top:2px}
+
+
+.sec-div{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;padding:10px 0 8px;border-bottom:2px solid var(--border);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec-div::before{content:'';display:inline-block;width:4px;height:16px;border-radius:2px;background:var(--c,var(--teal));flex-shrink:0}
+
+
+.src-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  color:#888;background:#f5f7fa;border:1px solid #e5e8ef;
+  border-radius:5px;padding:2px 7px;margin-left:8px;
+  cursor:help;white-space:nowrap;vertical-align:middle;
+  position:relative;
+  transition:background .15s,color .15s;
+}
+.src-badge:hover{background:var(--navy);color:#fff}
+.src-badge .src-icon{font-size:10px}
+
+
+.panel-src{
+  font-size:10px;color:#aaa;margin-top:10px;padding-top:8px;
+  border-top:1px solid #f0f2f5;
+  display:flex;align-items:center;gap:5px;
+}
+.panel-src .ps-icon{color:var(--teal);font-size:11px}
+
+
+table.t td[data-src]{cursor:help}
+table.t td[data-src]:hover{background:#eef4fc !important}
+
+
+.gls{
+  border-bottom:1.5px dashed var(--teal);
+  cursor:help;
+  color:inherit;
+  position:relative;
+}
+
+
+.hb-row[data-src]{cursor:help}
+.hb-row[data-src]:hover .hb-lbl{color:var(--navy);font-weight:700}
+.hb-row[data-src]:hover .hb-fill{filter:brightness(1.1)}
+
+
+.epc-card{cursor:default}
+.epc-card[data-src]:hover{box-shadow:0 6px 18px rgba(0,0,0,.1);transform:translateY(-1px)}
+
+
+.doc-footer{
+  background:linear-gradient(135deg,#f8fafd,#f0f4fb);
+  border:1px solid #e5e8ef;border-radius:8px;
+  padding:12px 16px;margin-top:14px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.df-col{display:flex;flex-direction:column;gap:4px}
+.df-ttl{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:2px}
+.df-item{font-size:11px;color:var(--soft);display:flex;align-items:flex-start;gap:5px;line-height:1.4}
+.df-icon{color:var(--teal);flex-shrink:0;font-size:12px;margin-top:1px}
+
+
+.num-src{cursor:help;border-bottom:1px dashed #c9d4e8}
+.num-src:hover{border-bottom-color:var(--teal);color:var(--navy)}
+
+
+[data-src],[data-tip]{cursor:help}
+
+.foda-item[data-src]:hover{background:rgba(0,0,0,.03);border-radius:4px;padding-left:4px;transition:all .15s}
+
+.sc[data-tip]{cursor:help}
+
+.rr-m[data-src]{cursor:help;border-bottom:1px dashed #c9d4e8}
+.rr-m[data-src]:hover{border-bottom-color:var(--teal);color:var(--navy);background:#eef4fc}
+
+.recom-ttl[data-tip],.prosp-ttl[data-tip],.rr-ttl[data-tip]{text-decoration:underline dotted #c9d4e8;text-underline-offset:3px}
+.recom-ttl[data-tip]:hover,.prosp-ttl[data-tip]:hover,.rr-ttl[data-tip]:hover{text-decoration-color:var(--teal)}
+
+</style>
+</head>
+<body>
+
+<!-- GLOBAL TOOLTIP OVERLAY — renders above everything, never clipped -->
+<div id="kpiTooltip"></div>
+
+<!-- GLOSSARY / SOURCE OVERLAY — same architecture -->
+<div id="srcOverlay" style="
+  position:fixed;z-index:99998;
+  background:#0f172a;color:#e2e8f0;
+  font-size:11.5px;font-weight:400;line-height:1.6;
+  padding:10px 14px;border-radius:8px;
+  max-width:280px;pointer-events:none;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .16s ease,transform .16s ease;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  white-space:normal;
+"></div>
+
+<!-- INSTITUTIONAL HEADER -->
+<div class="inst-header">
+  <div class="inst-text">
+    <div class="inst-line1">UNIVERSIDAD DE MANIZALES &nbsp;|&nbsp; Facultad de Ciencias Contables, Económicas y Administrativas</div>
+    <div class="inst-tags">
+      <span class="inst-tag">Contabilidad Financiera</span>
+      <span class="inst-tag">Análisis Financiero</span>
+      <span class="inst-tag">Docente: Jhon Fredy Gómez Galeano</span>
+    </div>
+    <div class="inst-author">Elaborado por: Jair Augusto Ramírez Mejía</div>
+  </div>
+  <div class="inst-logo">
+    <img src="https://umanizales.edu.co/sites/default/files/2026-02/logotipoUManizales_blanco.png" alt="Universidad de Manizales" style="height:60px;width:auto;display:block;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3))">
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo">ANDRITZ HYDRO LTDA.</div>
+  <div class="tb-title">Dashboard Financiero Interactivo 2024–2025</div>
+  <div class="tb-meta">NIT 830.092.234-1 &nbsp;·&nbsp; Cifras en millones COP &nbsp;·&nbsp; NIIF Plenas</div>
+</div>
+
+<div class="nav" id="mainNav">
+  <button class="nav-btn active" onclick="showPage('resumen')">Resumen Ejecutivo</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" onclick="showPage('activo')">Activo</button>
+  <button class="nav-btn" onclick="showPage('pasivo')">Pasivo &amp; Patrimonio</button>
+  <button class="nav-btn" onclick="showPage('resultados')">Resultados</button>
+  <button class="nav-btn" onclick="showPage('flujos')">Flujos de Efectivo</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" onclick="showPage('endeudamiento')">Endeudamiento</button>
+  <button class="nav-btn" onclick="showPage('liquidez')">Liquidez</button>
+  <button class="nav-btn" onclick="showPage('rentabilidad')">Rentabilidad</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" onclick="showPage('diagnostico')">Diagnóstico</button>
+</div>
+
+<div class="page active" id="page-resumen" style="opacity:1">
+
+
+  <div id="kpiStrip" class="kpi-strip s6" style="margin-bottom:12px"></div>
+
+  
+  <div class="slide-logic">
+    <div class="sl-grid">
+      <div class="sl-block">
+        <div class="sl-tag assert">① Situación</div>
+        <div class="sl-number">+33,9%</div>
+        <div class="sl-heading">El mejor año de ingresos en la historia reciente de ANDRITZ Hydro</div>
+        <div class="sl-body">Servicios CH creció <strong>+64%</strong> y Repuestos <strong>+52,5%</strong>. El mix de negocio mejoró estructuralmente: los segmentos de mayor margen ahora representan el <strong>83,6%</strong> de los ingresos. El margen bruto alcanzó <strong>34,2%</strong>, el mejor nivel registrado.</div>
+      </div>
+      <div class="sl-div"></div>
+      <div class="sl-block">
+        <div class="sl-tag evid">② Complicación</div>
+        <div class="sl-number warn">−0,44 pp</div>
+        <div class="sl-heading">Sin embargo, el margen operativo cayó mientras los ingresos subían</div>
+        <div class="sl-body">Los gastos operativos crecieron <strong>+77,6%</strong> — el doble de los ingresos. Viáticos (<strong>+$836M</strong>), servicios externos y gastos de oficina absorbieron toda la ganancia del margen bruto. El margen operativo (2,36%) está <strong>21% por debajo</strong> del mínimo sectorial (3,0%).</div>
+      </div>
+      <div class="sl-div"></div>
+      <div class="sl-block">
+        <div class="sl-tag impl">③ Implicación</div>
+        <div class="sl-number" style="color:var(--green)">$9.313M</div>
+        <div class="sl-heading">La posición financiera es sólida, pero exige acción inmediata en costos</div>
+        <div class="sl-body">La caja récord ($9.313M), la ausencia de deuda bancaria y el flujo operativo positivo ($1.741M) dan tiempo para corregir. <strong>La acción prioritaria es única</strong>: implementar control presupuestal de gastos operativos antes de que se erosione el colchón de liquidez (prueba ácida: 1,00x).</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel full" style="margin-bottom:12px">
+    <div class="panel-hd">
+      <div class="panel-title">Causalidad del Margen Operativo — ¿Por qué bajó si los ingresos subieron 33,9%?<span class="src-badge" data-src="Análisis causal propio basado en E. Resultados 2025 · Ingresos +33,9% vs Otros gastos +77,6% · Metodología: análisis de drivers de margen operativo (Big4/CFA)"><span class="src-icon">🔢</span> E. Resultados · Análisis causal</span></div>
+      <div class="panel-sub">Análisis causal Big4/CFA: cada bloque es verificable en los estados financieros · hover para interacción</div>
+    </div>
+    <div class="causal-wf">
+      <div class="cw-step"><div class="cw-box pos" data-tip="Ingresos totales 2025: $39.206M vs $29.278M en 2024. Servicios CH lidera con +64%."><div class="cw-icon">↑</div><div class="cw-lbl">Ingresos</div><div class="cw-val">+33,9%</div><div class="cw-delta up">$39.206M</div><div class="cw-cause">Servicios CH +64%<br>Repuestos +52,5%</div></div></div>
+      <div class="cw-connector">+</div>
+      <div class="cw-step"><div class="cw-box pos" data-tip="El costo de ventas creció solo +27,4% vs ingresos +33,9%. La eficiencia de costos directos mejoró."><div class="cw-icon">↑</div><div class="cw-lbl">Margen Bruto</div><div class="cw-val">34,2%</div><div class="cw-delta up">▲ +3,4 pp</div><div class="cw-cause">Costos directos<br>crecen solo +27,4%</div></div></div>
+      <div class="cw-connector">−</div>
+      <div class="cw-step"><div class="cw-box neg" data-tip="Otros gastos operativos: $5.526M en 2025 vs $3.111M en 2024. Viáticos +$836M es la partida más grande."><div class="cw-icon">↑↑</div><div class="cw-lbl">Gastos Op.</div><div class="cw-val">+77,6%</div><div class="cw-delta dn">$5.526M (+$2.415M)</div><div class="cw-cause">Viáticos +$836M<br>Servicios externos</div></div></div>
+      <div class="cw-connector">=</div>
+      <div class="cw-step"><div class="cw-box warn" data-tip="Margen operativo 2025: 2,36% vs 2,80% en 2024. Sector EPC benchmark mínimo: 3,0%."><div class="cw-icon">↓</div><div class="cw-lbl">Margen Op.</div><div class="cw-val">2,36%</div><div class="cw-delta dn">▼ −0,44 pp</div><div class="cw-cause">Ganancia bruta<br>consumida por<br>gastos indirectos</div></div></div>
+      <div class="cw-connector">→</div>
+      <div class="cw-step"><div class="cw-box res" data-tip="Problema de escalabilidad de gastos indirectos, no de modelo de negocio. El modelo es sano."><div class="cw-icon">⚠</div><div class="cw-lbl">Diagnóstico</div><div class="cw-val" style="font-size:13px;line-height:1.2">Gastos no<br>escalables</div><div class="cw-delta dn">Riesgo estructural</div><div class="cw-cause">Modelo sano.<br>Control de gastos<br>no escala.</div></div></div>
+    </div>
+  </div>
+
+  
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-title">Cascada de Resultados 2025<span class="src-badge" data-src="Estado de Resultados 2025 · Nota 5 Ingresos / Nota 12 Gastos · Auditoría GBP Audit S.A.S."><span class="src-icon">📄</span> E. Resultados</span> — Waterfall Dinámico</div>
+        <div class="panel-sub">Barras flotantes reales con offset acumulado · hover para valores</div>
+      </div>
+      <div class="leg">
+        <span class="leg-item"><span class="leg-dot" style="background:#00b4d8"></span>Subtotal/Total</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#21c97a"></span>Positivo</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#ef4444"></span>Negativo</span>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="waterfallChart" data-tip="Gráfica de cascada (waterfall): cada barra muestra el efecto de un componente del Estado de Resultados. Las barras grises invisibles son el &quot;andamiaje&quot; que hace flotar las barras de color en la posición correcta. Azul = subtotal positivo · Verde = aporte positivo · Rojo = deducción." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-title">Ingresos por Segmento — 2024 vs 2025<span class="src-badge" data-src="Estado de Resultados 2025 · Nota 5 — Ingresos por segmento"><span class="src-icon">📄</span> E. Resultados · N5</span></div>
+        <div class="panel-sub">MCOP · click en la leyenda del gráfico para filtrar</div>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="ingresosChart" data-tip="Barras agrupadas 2024 vs 2025 por segmento de negocio. Permite comparar simultáneamente el volumen absoluto y la evolución entre años. Fuente: Estado de Resultados 2025 · Nota 5 Ingresos por segmento." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-title">Evolución de Márgenes 2024 → 2025<span class="src-badge" data-src="Cálculo propio sobre Estado de Resultados: Margen = Utilidad del nivel / Ingresos operacionales del período"><span class="src-icon">🔢</span> Cálculo propio</span></div>
+        <div class="panel-sub">% sobre ingresos · semáforo: verde = mejora, rojo = deterioro</div>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="margenesChart" data-tip="Comparativo de márgenes 2024 (gris) vs 2025 (color). El color de la barra 2025 indica la dirección: verde = mejoró, rojo = empeoró. Todos los márgenes se calculan como % sobre los ingresos operacionales del mismo período." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-title">Estructura de Financiamiento<span class="src-badge" data-src="Estado de Situación Financiera (Balance General) 2024-2025 · Pasivo corriente, No corriente y Patrimonio / Activo total"><span class="src-icon">📄</span> Balance General</span></div>
+        <div class="panel-sub">% del activo total financiado por fuente · 2024 vs 2025</div>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="balanceChart" data-tip="Estructura de financiamiento del activo: qué porcentaje del activo total es financiado por cada fuente. Permite ver si la empresa depende más de deuda corriente, deuda LP o capital propio. Fuente: Balance General comparativo." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="page" id="page-activo">
+  <div id="kpiStripActivo" class="kpi-strip s4" style="margin-bottom:12px"></div>
+
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Activos Corrientes — Comparativo MCOP<span class="src-badge" data-src="Estado de Situación Financiera 2025 · Sección Activo Corriente — Efectivo, Cartera, Inventarios, Impuestos"><span class="src-icon">📄</span> Balance · Activo Cte.</span></div><div class="panel-sub">Barras agrupadas: comparación directa por rubro</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#00b4d8"></span>2025</span></div>
+      <div class="chart-wrap" style="height:250px"><canvas id="activoCorrChart" data-tip="Composición del activo corriente 2024 vs 2025. El activo corriente representa el 87% del activo total, propio del modelo EPC. La barra de inventarios (naranja) creció +61,7%, presionando la prueba ácida." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Activos No Corrientes 2025<span class="src-badge" data-src="Estado de Situación Financiera 2025 · Sección Activo No Corriente — PPE Nota 8, Intangibles Nota 9, Diferido Nota 10"><span class="src-icon">📄</span> Balance · ANC</span></div><div class="panel-sub">Composición por rubro — % sobre ANC total ($4.049M)</div></div>
+      <div class="hbars" style="margin-top:14px">
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 10 — Impuesto diferido activo Suc. Perú: diferencia fiscal que genera un activo temporal por pérdida fiscal $1.361M"><div class="hb-lbl">Imp. Diferido Activo</div><div class="hb-track"><div class="hb-fill" style="width:69.8%;background:#8b5cf6">69,8%</div></div><div class="hb-val">$2.828M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 8 — Propiedades, Planta y Equipo neta + Derechos de uso <span class="gls" data-gls="NIIF 16 (Arrendamientos): Norma Internacional de Información Financiera que obliga a reconocer los arrendamientos como activos (derechos de uso) y pasivos en el balance, eliminando la distinción entre arrendamientos operativos y financieros. Vigente desde 2019.">NIIF 16</span> ($289M)"><div class="hb-lbl">PPE Neta</div><div class="hb-track"><div class="hb-fill" style="width:29.2%;background:#1b2a4a">29,2%</div></div><div class="hb-val">$1.184M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 9 — Software y licencias en amortización"><div class="hb-lbl">Intangibles</div><div class="hb-track" style="position:relative;overflow:visible"><div class="hb-fill" style="width:0.9%;background:#f59e0b;min-width:6px"> </div><span style="position:absolute;left:calc(0.9% + 10px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#f59e0b;white-space:nowrap">0,9%</span></div><div class="hb-val">$37M</div></div>
+      </div>
+      <div class="hb-note">Activo diferido Suc. Perú domina el ANC (69,8%) — componente temporal sujeto a reversión al cierre 2026-2027. Riesgo de deterioro si la base gravable no se recupera.</div>
+    </div>
+  </div>
+
+  <div class="panel full" style="margin-bottom:12px">
+    <div class="panel-hd"><div class="panel-title">Lectura Estructural — Modelo EPC<span class="src-badge" data-src="Análisis cualitativo del modelo de negocio · Referencia: <span class="gls" data-gls="NIIF 15 (Ingresos de Contratos con Clientes): Norma que establece cuándo y cómo reconocer ingresos. Para contratos EPC como los de ANDRITZ, el ingreso se reconoce según el avance de obra (método del porcentaje de terminación).">NIIF 15</span> Contratos con clientes · Damodaran — Engineering Services Industry"><span class="src-icon">📚</span> NIIF 15 · Damodaran</span> / Servicios por Proyectos</div><div class="panel-sub">La estructura del balance no puede leerse con parámetros industriales: ANDRITZ opera bajo contratos por avance de obra</div></div>
+    <div class="epc-grid">
+      <div class="epc-card" style="--c:#3b82f6"><div class="epc-ttl">① Activo intensivo en KT, no en PPE</div><div class="epc-val">87,1% activo corriente</div><div class="epc-desc">En EPC, el activo fijo es deliberadamente bajo. Los recursos se concentran en cartera ($10.986M) e inventarios WIP ($4.152M) que representan contratos activos. PPE baja no es debilidad — es el modelo. Comparar con empresas manufactureras sería un error metodológico.</div></div>
+      <div class="epc-card" style="--c:#f59e0b"><div class="epc-ttl">② Pasivo operativo ≠ deuda financiera</div><div class="epc-val">56,7% son provisiones de garantía</div><div class="epc-desc">De los $24.938M de pasivo, $14.136M son provisiones contractuales — no deuda exigible por un acreedor. La deuda bancaria es $0. El análisis de endeudamiento tradicional sobreestima el riesgo un 230% si no se hace esta distinción.</div></div>
+      <div class="epc-card" style="--c:#21c97a"><div class="epc-ttl">③ Sensibilidad del Capital de Trabajo</div><div class="epc-val"><span class="gls" data-gls="KTN (Capital de Trabajo Neto): Activo Corriente − Pasivo Corriente = $27.372M − $23.158M = $4.214M. Mide el colchón financiero de corto plazo disponible después de cubrir todas las deudas corrientes.">KTN</span>: $4.214M (↓19,8%)</div><div class="epc-desc">En EPC, el ciclo de caja depende del ritmo de facturación por avance. Un retraso de 30 días en cobros de cartera ($10.986M) impacta ~$1.000M en caja libre — equivalente al 86% del <span class="gls" data-gls="FCF (Free Cash Flow / Flujo de Caja Libre): Flujo Operativo Neto − CAPEX = $1.741M − $583M = $1.158M. Efectivo disponible después de mantener y expandir la capacidad operativa.">FCF</span> anual. La prueba ácida en 1,00x deja margen mínimo.</div></div>
+    </div>
+  </div>
+
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Detalle Activos — Variación y Análisis<span class="src-badge" data-src="Estado de Situación Financiera comparativo 2024-2025 · Notas 6-10 del informe auditado · GBP Audit S.A.S."><span class="src-icon">📄</span> Balance + Notas 6-10</span></div><div class="panel-sub">MCOP · Formato NIIF estado de posición financiera</div></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Rubro</th><th>2024</th><th>2025</th><th>Δ $</th><th>Δ %</th><th style="min-width:220px;text-align:left">Interpretación clave</th></tr></thead>
+      <tbody>
+        <tr class="hdr"><td colspan="6">ACTIVO CORRIENTE</td></tr>
+        <tr><td>&nbsp;&nbsp;Efectivo y equivalentes</td><td>8.173</td><td>9.313</td><td class="pos">+1.140</td><td class="pos">+13,9%</td><td class="sub">Posición de caja histórica máxima. Cubre 4,8 meses de gastos operativos. Bancos Colombia, Perú y Panamá.</td></tr>
+        <tr><td>&nbsp;&nbsp;Cuentas por cobrar</td><td>10.826</td><td>10.986</td><td class="pos">+160</td><td class="pos">+1,5%</td><td class="sub">Rotación estable ~60 días pese al crecimiento de ingresos +33,9%. Gestión eficiente sin deterioro de cartera.</td></tr>
+        <tr><td>&nbsp;&nbsp;Inventarios</td><td>2.567</td><td>4.152</td><td class="pos">+1.585</td><td class="pos">+61,7%</td><td class="sub">Materiales y trabajos en proceso para proyectos activos en Colombia y Perú. El crecimiento del 61,7% reduce la liquidez disponible sin inventarios (prueba ácida: 1,00x, en el límite mínimo).</td></tr>
+        <tr><td>&nbsp;&nbsp;Impuestos corrientes neto</td><td>3.646</td><td>2.658</td><td class="neg">-988</td><td class="neg">-27,1%</td><td class="sub">Mayor compensación de retenciones. Gestión tributaria activa reduce activo corriente de impuestos.</td></tr>
+        <tr><td>&nbsp;&nbsp;Otros activos corrientes</td><td>78</td><td>263</td><td class="pos">+185</td><td class="pos">+238%</td><td class="sub">Anticipos a proveedores para proyectos. Monto pequeño; crecimiento refleja mayor actividad contractual.</td></tr>
+        <tr class="sub-hdr"><td>TOTAL ACTIVO CORRIENTE</td><td>25.291</td><td>27.372</td><td class="pos">+2.082</td><td class="pos">+8,2%</td><td class="sub">87,1% del activo total — intensidad de KT propia del modelo EPC.</td></tr>
+        <tr class="hdr"><td colspan="6">ACTIVO NO CORRIENTE</td></tr>
+        <tr><td>&nbsp;&nbsp;PPE neta (incl. NIIF 16)</td><td>858</td><td>1.184</td><td class="pos">+326</td><td class="pos">+38,0%</td><td class="sub">Maquinaria taller + derechos de uso NIIF 16. PPE es solo 3,8% del activo — empresa no intensiva en activos fijos.</td></tr>
+        <tr><td>&nbsp;&nbsp;Intangibles (software)</td><td>45</td><td>37</td><td class="neg">-8</td><td class="neg">-17,8%</td><td class="sub">Amortización de licencias. Sin nuevas adquisiciones significativas.</td></tr>
+        <tr><td>&nbsp;&nbsp;Impuesto diferido activo</td><td>1.467</td><td>2.828</td><td class="pos">+1.361</td><td class="pos">+92,8%</td><td class="sub">Pérdida fiscal Suc. Perú genera diferencia temporaria. Componente temporal: se revertirá cuando cierre la Sucursal Perú (2026-2027). Si no se recupera la base gravable, este activo pierde valor..</td></tr>
+        <tr class="sub-hdr"><td>TOTAL ACTIVO NO CORRIENTE</td><td>2.485</td><td>4.049</td><td class="pos">+1.564</td><td class="pos">+62,9%</td><td class="sub">Diferido Perú (+$1.361M) explica el 87% del incremento.</td></tr>
+        <tr class="hdr"><td>TOTAL ACTIVOS</td><td>27.776</td><td>31.421</td><td class="pos">+3.645</td><td class="pos">+13,1%</td><td class="sub">Crecimiento impulsado por mayor actividad operativa y diferido Perú.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<div class="page" id="page-pasivo">
+  <div id="kpiStripPasivo" class="kpi-strip s4" style="margin-bottom:12px"></div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Composición Pasivo Corriente — MCOP<span class="src-badge" data-src="Estado de Situación Financiera 2025 · Pasivo Corriente — Nota 13 Provisiones, Nota 14 Beneficios, Nota 15 Impuestos"><span class="src-icon">📄</span> Balance · Pasivo Cte.</span></div><div class="panel-sub">2024 vs 2025 por rubro</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#ef4444"></span>2025</span></div>
+      <div class="chart-wrap" style="height:250px"><canvas id="pasivoCorrChart" data-tip="Composición del pasivo corriente 2024 vs 2025. La barra dominante son las provisiones de garantía (más de la mitad del total) — estas son obligaciones contractuales, no deuda financiera. Los acreedores IC (rojo) crecieron +125%." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Evolución del Patrimonio<span class="src-badge" data-src="Estado de Cambios en el Patrimonio 2024-2025 · Capital, Reservas, Resultados acumulados y del ejercicio"><span class="src-icon">📄</span> E. Patrimonio</span> 2024 → 2025</div><div class="panel-sub">Barras apiladas por componente — MCOP</div></div>
+      <div class="leg">
+        <span class="leg-item"><span class="leg-dot" style="background:#1b2a4a"></span>Capital</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#3b82f6"></span>Reservas</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#21c97a"></span>Res. Acum.</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#f59e0b"></span>Res. Ejercicio</span>
+      </div>
+      <div class="chart-wrap" style="height:250px"><canvas id="patrimonioChart" data-tip="Evolución del patrimonio por componente: capital (constante), reservas (constantes), resultados acumulados (crecen por retención de utilidades) y resultado del ejercicio. Sin distribución de dividendos en ninguno de los dos años." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Detalle Pasivos y Patrimonio<span class="src-badge" data-src="Estado de Situación Financiera comparativo · Nota 13 Provisiones de garantía, Nota 16 NIIF 16, Nota 17 Plan de sucesión · GBP Audit"><span class="src-icon">📄</span> Balance + Notas 13-17</span></div><div class="panel-sub">MCOP · Presentados por orden de exigibilidad (NIIF)</div></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Rubro</th><th>2024</th><th>2025</th><th>Δ $</th><th>Δ %</th><th style="min-width:220px;text-align:left">Interpretación clave</th></tr></thead>
+      <tbody>
+        <tr class="hdr"><td colspan="6">PASIVO CORRIENTE — mayor exigibilidad</td></tr>
+        <tr><td>&nbsp;&nbsp;Acreedores comerciales IC</td><td>3.534</td><td>7.957</td><td class="neg">+4.423</td><td class="neg">+125,2%</td><td class="sub">Compras a partes relacionadas IC (Italia, Austria, Suiza) para proyectos. Concentración creciente — riesgo de condiciones de pago desfavorables.</td></tr>
+        <tr><td>&nbsp;&nbsp;Provisiones de garantía CP</td><td>13.612</td><td>12.995</td><td class="pos">-617</td><td class="pos">-4,5%</td><td class="sub">La partida más grande del pasivo (52,1% del total). Son garantías que la empresa debe reservar por contratos ejecutados, no deuda a un banco. Se liberan gradualmente cuando vencen los períodos de garantía.</td></tr>
+        <tr><td>&nbsp;&nbsp;Beneficios empleados CP</td><td>821</td><td>670</td><td class="pos">-151</td><td class="pos">-18,4%</td><td class="sub">Menor prima/bonificación. Señal de estabilidad de plantilla.</td></tr>
+        <tr><td>&nbsp;&nbsp;Impuesto corriente por pagar</td><td>1.022</td><td>541</td><td class="pos">-481</td><td class="pos">-47,1%</td><td class="sub">Mayor anticipo 2024 reduce el saldo 2025. Gestión tributaria activa.</td></tr>
+        <tr class="sub-hdr"><td>TOTAL PASIVO CORRIENTE</td><td>20.039</td><td>23.158</td><td class="neg">+3.119</td><td class="neg">+15,6%</td><td class="sub">92,9% del pasivo vence en CP, principalmente por provisiones de garantía.</td></tr>
+        <tr class="hdr"><td colspan="6">PASIVO NO CORRIENTE — menor exigibilidad</td></tr>
+        <tr><td>&nbsp;&nbsp;Arrendamientos NIIF 16 LP</td><td>271</td><td>289</td><td class="neg">+18</td><td class="neg">+6,6%</td><td class="sub">Única deuda financiera formal — monto inmaterial. Sin créditos bancarios LP.</td></tr>
+        <tr><td>&nbsp;&nbsp;Provisiones de garantía LP</td><td>1.294</td><td>1.141</td><td class="pos">-153</td><td class="pos">-11,8%</td><td class="sub">Reversión gradual de garantías LP. Tendencia positiva.</td></tr>
+        <tr><td>&nbsp;&nbsp;Beneficios empleados LP</td><td>0</td><td>350</td><td class="neg">+350</td><td class="neg">Nuevo</td><td class="sub">Plan de sucesión para personal clave reconocido por primera vez en 2025.</td></tr>
+        <tr class="sub-hdr"><td>TOTAL PASIVO NO CORRIENTE</td><td>1.565</td><td>1.780</td><td class="neg">+215</td><td class="neg">+13,7%</td><td class="sub">Solo el 7,1% del pasivo. Sin deuda bancaria LP — fortaleza estructural.</td></tr>
+        <tr class="hdr"><td>TOTAL PASIVOS</td><td>21.605</td><td>24.938</td><td class="neg">+3.333</td><td class="neg">+15,4%</td><td class="sub">56,7% son provisiones de garantía — naturaleza operativa, no financiera.</td></tr>
+        <tr class="hdr"><td colspan="6">PATRIMONIO</td></tr>
+        <tr><td>&nbsp;&nbsp;Capital social</td><td>696</td><td>696</td><td>0</td><td>0%</td><td class="sub">El capital social no cambió. La casa matriz ANDRITZ AG (Austria) es el único propietario.</td></tr>
+        <tr><td>&nbsp;&nbsp;Reservas legales y estatutarias</td><td>1.223</td><td>1.223</td><td>0</td><td>0%</td><td class="sub">Sin nueva apropiación. Reservas de períodos anteriores.</td></tr>
+        <tr><td>&nbsp;&nbsp;Resultados acumulados</td><td>4.008</td><td>4.252</td><td class="pos">+244</td><td class="pos">+6,1%</td><td class="sub">Resultado 2024 ($201M) transferido. Sin distribución de dividendos.</td></tr>
+        <tr><td>&nbsp;&nbsp;Resultado del ejercicio</td><td>201</td><td>312</td><td class="pos">+111</td><td class="pos">+55,2%</td><td class="sub">Mejor resultado neto reciente. Sin dividendos — fortalece el patrimonio.</td></tr>
+        <tr class="sub-hdr"><td>TOTAL PATRIMONIO</td><td>6.171</td><td>6.483</td><td class="pos">+312</td><td class="pos">+5,1%</td><td class="sub">Crece exclusivamente por retención de utilidades.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<div class="page" id="page-resultados">
+  <div id="kpiStripRes" class="kpi-strip s4" style="margin-bottom:12px"></div>
+
+  <!-- McKinsey slide for results page -->
+  <div class="slide-logic" style="margin-bottom:12px">
+    <div class="sl-grid">
+      <div class="sl-block">
+        <div class="sl-tag assert">① Expansión del margen bruto</div>
+        <div class="sl-number">34,2%</div>
+        <div class="sl-heading">Los costos directos crecieron más lento que los ingresos — mejora real de eficiencia</div>
+        <div class="sl-body">Los costos de ventas crecieron <strong>+27,4%</strong> mientras los ingresos crecieron <strong>+33,9%</strong>. La diferencia (6,5 pp) generó $4.378M adicionales de utilidad bruta. El mix hacia Servicios CH (menor costo unitario) es el mecanismo económico.</div>
+      </div>
+      <div class="sl-div"></div>
+      <div class="sl-block">
+        <div class="sl-tag evid">② Pero los gastos indirectos se descontrolaron</div>
+        <div class="sl-number warn">+77,6%</div>
+        <div class="sl-heading">Los gastos administrativos e indirectos crecen al doble de los ingresos — señal de alarma</div>
+        <div class="sl-body">De los <strong>$2.415M</strong> de incremento, viáticos explican <strong>$836M</strong> (35%). Servicios externos y gastos de oficina explican el resto. Este tipo de gasto no tiene relación directa con el volumen de proyectos — es una señal de falta de control presupuestal.</div>
+      </div>
+      <div class="sl-div"></div>
+      <div class="sl-block">
+        <div class="sl-tag impl">③ El resultado neto mejora por efecto fiscal no recurrente</div>
+        <div class="sl-number" style="color:var(--green)">+55,2%</div>
+        <div class="sl-heading">Sin el efecto fiscal de Perú, la mejora de utilidad neta sería mucho menor</div>
+        <div class="sl-body">El impuesto diferido de Suc. Perú redujo la carga tributaria en <strong>$787M</strong> — efecto de una sola vez. Sin este ajuste, el resultado neto estructural sería ~$80-100M. La mejora del 55,2% incluye un componente no recurrente que debe separarse al proyectar 2026.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g6040">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Ingresos por Segmento — 2024 vs 2025<span class="src-badge" data-src="Estado de Resultados 2025 · Nota 5 — Ingresos por segmento"><span class="src-icon">📄</span> E. Resultados · N5</span></div><div class="panel-sub">MCOP</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#00b4d8"></span>2025</span></div>
+      <div class="chart-wrap" style="height:230px"><canvas id="segmentosChart" data-tip="Ingresos por línea de negocio 2024 vs 2025. Servicios CH (+64%) y Repuestos (+52,5%) crecen con fuerza. Maquinaria PTAR cae -27,1%, reduciendo su participación del 27,8% al 15,2% del total." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Mix de Ingresos 2025<span class="src-badge" data-src="Cálculo propio: participación % de cada segmento sobre ingresos totales · Fuente base: Nota 5 E. Resultados 2025"><span class="src-icon">🔢</span> N5 · Cálculo %</span></div><div class="panel-sub">% sobre total — $39.206M = 100%</div></div>
+      <div class="hbars" style="margin-top:10px">
+        <div class="hb-row" data-src="E. Resultados 2025 · Nota 5 — Ingresos por prestación de servicios de O&M en Centrales Hidroeléctricas Colombia y Perú"><div class="hb-lbl">Servicios CH</div><div class="hb-track"><div class="hb-fill" style="width:48.6%;background:#00b4d8">48,6%</div></div><div class="hb-val">$19.058M</div></div>
+        <div class="hb-row" data-src="E. Resultados 2025 · Nota 5 — Ingresos por suministro de repuestos y materiales para centrales hidroeléctricas"><div class="hb-lbl">Repuestos CH/POC</div><div class="hb-track"><div class="hb-fill" style="width:35.0%;background:#1b2a4a">35,0%</div></div><div class="hb-val">$13.740M</div></div>
+        <div class="hb-row" data-src="E. Resultados 2025 · Nota 5 — Ingresos por suministro e instalación de equipos para Plantas de Tratamiento de Aguas Residuales"><div class="hb-lbl">Maquinaria PTAR</div><div class="hb-track"><div class="hb-fill" style="width:15.2%;background:#f59e0b">15,2%</div></div><div class="hb-val">$5.945M</div></div>
+        <div class="hb-row" data-src="E. Resultados 2025 · Nota 5 — Comisiones por intermediación con entidades del segmento Separation del grupo ANDRITZ AG"><div class="hb-lbl">Comisiones Sep.</div><div class="hb-track" style="position:relative;overflow:visible"><div class="hb-fill" style="width:1.2%;background:#21c97a;min-width:6px"> </div><span style="position:absolute;left:calc(1.2% + 10px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#21c97a;white-space:nowrap">1,2%</span></div><div class="hb-val">$464M</div></div>
+      </div>
+      <div class="hb-note">▲ Servicios CH: 48,6% vs 39,7% en 2024. PTAR: 15,2% vs 27,8%. Esta recomposición es el driver estructural del margen bruto.</div>
+    </div>
+  </div>
+
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Cuenta de Resultados — Análisis Vertical y Horizontal<span class="src-badge" data-src="Estado de Resultados del Período 2024-2025 · Análisis horizontal: variación absoluta y % entre períodos · Análisis vertical: % sobre ingresos del mismo período"><span class="src-icon">📄</span> E. Resultados + Análisis</span></div><div class="panel-sub">MCOP · % vertical sobre ingresos del mismo período</div></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Rubro</th><th>2024</th><th>2025</th><th>Δ $</th><th>Δ %</th><th>% 2024</th><th>% 2025</th><th style="min-width:220px;text-align:left">Interpretación clave</th></tr></thead>
+      <tbody>
+        <tr class="hdr"><td>Ingresos operacionales</td><td>29.278</td><td>39.206</td><td class="pos">+9.928</td><td class="pos">+33,9%</td><td>100%</td><td>100%</td><td class="sub">Mejor período de ingresos histórico reciente. Mix estructuralmente mejorado.</td></tr>
+        <tr><td>&nbsp;&nbsp;Servicios CH</td><td>11.617</td><td>19.058</td><td class="pos">+7.441</td><td class="pos">+64,0%</td><td>39,7%</td><td>48,6%</td><td class="sub">Segmento ancla. Mayor participación mejora el mix de margen por menor costo unitario vs equipos.</td></tr>
+        <tr><td>&nbsp;&nbsp;Repuestos CH/POC</td><td>9.008</td><td>13.740</td><td class="pos">+4.732</td><td class="pos">+52,5%</td><td>30,8%</td><td>35,0%</td><td class="sub">Crecimiento estable y predecible por los ciclos regulares de mantenimiento de centrales hidroeléctricas. Alta probabilidad de renovación contractual.</td></tr>
+        <tr><td>&nbsp;&nbsp;Maquinaria PTAR</td><td>8.154</td><td>5.945</td><td class="neg">-2.209</td><td class="neg">-27,1%</td><td>27,8%</td><td>15,2%</td><td class="sub">Contracción por menor licitación. Riesgo de backlog en 2026 si no se reactiva.</td></tr>
+        <tr><td>&nbsp;&nbsp;Comisiones Separation</td><td>498</td><td>464</td><td class="neg">-34</td><td class="neg">-6,8%</td><td>1,7%</td><td>1,2%</td><td class="sub">Participación marginal estable.</td></tr>
+        <tr><td>(-) Costo de ventas</td><td>(20.247)</td><td>(25.797)</td><td class="neg">-5.550</td><td class="neg">+27,4%</td><td>69,2%</td><td>65,8%</td><td class="sub">Costos crecen 27,4% vs ingresos 33,9%. La brecha (+6,5 pp) es el origen de la expansión del margen bruto.</td></tr>
+        <tr class="sub-hdr"><td>UTILIDAD BRUTA</td><td>9.031</td><td>13.409</td><td class="pos">+4.378</td><td class="pos">+48,5%</td><td>30,8%</td><td>34,2%</td><td class="sub">Expansión sólida +3,4 pp. Mejor margen bruto histórico reciente.</td></tr>
+        <tr><td>Otros ingresos operativos</td><td>2.309</td><td>2.575</td><td class="pos">+266</td><td class="pos">+11,5%</td><td>7,9%</td><td>6,6%</td><td class="sub">Diferencias en cambio y recuperaciones. Componente volátil — no estructural.</td></tr>
+        <tr><td>(-) Gastos de personal</td><td>(6.911)</td><td>(8.868)</td><td class="neg">-1.957</td><td class="neg">+28,3%</td><td>23,6%</td><td>22,6%</td><td class="sub">Aunque crecen en valor absoluto, representan menos porcentaje de los ingresos (22,6% en 2025 vs 23,6% en 2024). La empresa usa el equipo más eficientemente por peso de ingreso.</td></tr>
+        <tr><td>(-) Depreciación y amortización</td><td>(500)</td><td>(666)</td><td class="neg">-166</td><td class="neg">+33,2%</td><td>1,7%</td><td>1,7%</td><td class="sub">Gasto no efectivo. Porcentaje estable sobre ingresos.</td></tr>
+        <tr><td>(-) Otros gastos operativos</td><td>(3.111)</td><td>(5.526)</td><td class="neg">-2.415</td><td class="neg">+77,6%</td><td>10,6%</td><td>14,1%</td><td class="sub">⚠ Principal problema del período. Estos gastos —viáticos, servicios externos, gastos de oficina— crecieron al 77,6%, casi el doble que los ingresos (+33,9%). Los viáticos solos aumentaron $836M. Requieren control presupuestal inmediato.</td></tr>
+        <tr class="sub-hdr"><td>RESULTADO OPERATIVO (<span class="gls" data-gls="UAII (Utilidad Antes de Intereses e Impuestos): También llamado EBIT en inglés o Resultado Operativo. Mide la rentabilidad de las operaciones del negocio antes del efecto del financiamiento y los impuestos.">UAII</span>)</td><td>819</td><td>925</td><td class="pos">+106</td><td class="pos">+12,9%</td><td>2,80%</td><td>2,36%</td><td class="sub">Crece en valor absoluto pero margen cae 0,44 pp. Por debajo del benchmark sectorial (3,0%-6,0%).</td></tr>
+        <tr><td>Resultado financiero neto</td><td>492</td><td>(290)</td><td class="neg">-782</td><td class="neg">—</td><td>1,7%</td><td>-0,7%</td><td class="sub">Reversión: de ingreso neto a costo neto. Diferencia en cambio desfavorable e intereses NIIF 16.</td></tr>
+        <tr><td>(-) Impuesto a las ganancias</td><td>(1.110)</td><td>(323)</td><td class="pos">+787</td><td class="pos">-70,9%</td><td>-3,8%</td><td>-0,8%</td><td class="sub">Efecto diferido Perú no recurrente (-$1.093M). Sin este ajuste, carga tributaria sería similar a 2024.</td></tr>
+        <tr class="hdr"><td>RESULTADO NETO</td><td>201</td><td>312</td><td class="pos">+111</td><td class="pos">+55,2%</td><td>0,69%</td><td>0,80%</td><td class="sub">Mejora real pero parcialmente soportada por efecto fiscal no recurrente de Perú.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<div class="page" id="page-flujos">
+  <div id="kpiStripFlujos" class="kpi-strip s4" style="margin-bottom:12px"></div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Flujos por Actividad — 2024 vs 2025<span class="src-badge" data-src="Estado de Flujos de Efectivo 2024-2025 · Método indirecto · Actividades operativas, inversión y financiación · GBP Audit S.A.S."><span class="src-icon">📄</span> E. Flujos Efectivo</span></div><div class="panel-sub">MCOP · negativos = salidas de efectivo</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#21c97a"></span>Positivo 2025</span><span class="leg-item"><span class="leg-dot" style="background:#ef4444"></span>Negativo 2025</span><span class="leg-item"><span class="leg-dot" style="background:#00b4d8"></span>Var. Caja</span></div>
+      <div class="chart-wrap" style="height:260px"><canvas id="flujosChart" data-tip="Flujos de efectivo por actividad comparativo. Las barras negativas representan salidas de efectivo. El flujo operativo 2025 cayó principalmente por el ajuste del impuesto diferido de Perú (-$1.093M), no por deterioro del negocio." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Puente de Caja 2025<span class="src-badge" data-src="Cálculo propio basado en E. Flujos de Efectivo 2025 · Caja inicial (Balance 2024) → Flujo operativo → CAPEX → Financiación → Caja final (Balance 2025)"><span class="src-icon">🔢</span> Flujos · Cálculo bridge</span></div><div class="panel-sub">Caja inicial → generación → uso → caja final (MCOP)</div></div>
+      <div class="chart-wrap" style="height:260px"><canvas id="cajaChart" data-tip="Puente de caja (bridge chart): muestra cómo se transforma la caja inicial en caja final. Caja Inicial $8.173M + Flujo Operativo $1.741M − CAPEX $583M − Financiación $18M = Caja Final $9.313M." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Estado de Flujos — Conciliación Método Indirecto<span class="src-badge" data-src="Estado de Flujos de Efectivo 2025 · Método indirecto: parte del resultado del ejercicio y ajusta por partidas no monetarias y cambios en capital de trabajo · NIIF <span class="gls" data-gls="NIC 7 (Norma Internacional de Contabilidad 7 — Estado de Flujos de Efectivo): Exige presentar los flujos de efectivo clasificados en actividades operativas (método directo o indirecto), de inversión y de financiación.">NIC 7</span>"><span class="src-icon">📄</span> E. Flujos · NIC 7</span></div><div class="panel-sub">MCOP · Reconcilia resultado contable con efectivo generado</div></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Rubro</th><th>2024</th><th>2025</th><th>Δ</th><th style="min-width:260px;text-align:left">Interpretación clave</th></tr></thead>
+      <tbody>
+        <tr class="hdr"><td colspan="5">ACTIVIDADES OPERATIVAS — Método Indirecto</td></tr>
+        <tr><td>Resultado del ejercicio</td><td>201</td><td>312</td><td class="pos">+111</td><td class="sub">Base de partida mejorada +55,2%. Incluye efecto diferido Perú no recurrente.</td></tr>
+        <tr><td>&nbsp;&nbsp;(+) Depreciación y amortización</td><td>433</td><td>596</td><td class="pos">+163</td><td class="sub">No es una salida real de caja — es un ajuste contable. Se suma de nuevo en la conciliación del flujo. El aumento se debe a más activos adquiridos y contratos de arrendamiento reconocidos bajo NIIF 16.</td></tr>
+        <tr><td>&nbsp;&nbsp;(−/+) Variación impuesto diferido</td><td>35</td><td>(1.093)</td><td class="neg">-1.128</td><td class="sub">⚠ Ajuste más impactante. Activo diferido Perú reduce el flujo contable en $1.093M — no es salida real de caja. Efecto no recurrente.</td></tr>
+        <tr><td>&nbsp;&nbsp;(+) Impuesto corriente devengado</td><td>1.110</td><td>1.416</td><td class="neg">+306</td><td class="sub">Mayor carga corriente por mayor base gravable Colombia. Salida real materializada en impuestos pagados.</td></tr>
+        <tr><td>&nbsp;&nbsp;(+/−) Variación capital de trabajo</td><td>2.127</td><td>1.584</td><td class="neg">-543</td><td class="sub">Menor liberación de KT. Inventarios +$1.585M absorben recursos; parcialmente compensado por acreedores IC.</td></tr>
+        <tr class="sub-hdr"><td>Flujo operativo bruto</td><td>3.906</td><td>2.815</td><td class="neg">-1.091</td><td class="sub">Caída del 27,9%, explicada 103% por el diferido Perú. El negocio central genera flujo comparable a 2024.</td></tr>
+        <tr><td>&nbsp;&nbsp;(−) Impuestos pagados</td><td>(1.114)</td><td>(1.073)</td><td class="pos">+41</td><td class="sub">Caja pagada al fisco prácticamente estable.</td></tr>
+        <tr class="sub-hdr"><td>FLUJO OPERATIVO NETO</td><td>2.792</td><td>1.741</td><td class="neg">-1.051</td><td class="sub">Positivo y suficiente para cubrir las inversiones. La caída del -37,7% se explica casi completamente por el efecto contable del impuesto diferido de Perú ($1.093M), que no es una salida real de caja. El negocio en sí no se deterioró.</td></tr>
+        <tr class="hdr"><td colspan="5">ACTIVIDADES DE INVERSIÓN</td></tr>
+        <tr><td>&nbsp;&nbsp;(−) CAPEX — adquisición equipo</td><td>(301)</td><td>(567)</td><td class="neg">-266</td><td class="sub">CAPEX +88% por maquinaria para proyectos y NIIF 16. Señal de crecimiento alineada con ingresos +33,9%.</td></tr>
+        <tr><td>&nbsp;&nbsp;(−) Adquisición intangibles</td><td>(37)</td><td>(17)</td><td class="pos">+20</td><td class="sub">Reducción en inversión de software. Plataformas vigentes cubren necesidades.</td></tr>
+        <tr class="sub-hdr"><td>FLUJO NETO DE INVERSIÓN</td><td>(338)</td><td>(583)</td><td class="neg">-245</td><td class="sub">FCF/Ingresos = 3,0% — bajo pero sostenible en modelo de servicios no intensivo en activos fijos.</td></tr>
+        <tr class="hdr"><td colspan="5">ACTIVIDADES DE FINANCIACIÓN</td></tr>
+        <tr><td>&nbsp;&nbsp;(−) Pago arrendamientos NIIF 16</td><td>(330)</td><td>(18)</td><td class="pos">+312</td><td class="sub">Vencimiento de contratos NIIF 16. Sin dividendos distribuidos ni nueva deuda bancaria.</td></tr>
+        <tr class="sub-hdr"><td>FLUJO NETO DE FINANCIACIÓN</td><td>(330)</td><td>(18)</td><td class="pos">+312</td><td class="sub">Empresa autosuficiente. No requirió endeudamiento bancario.</td></tr>
+        <tr class="hdr"><td>VARIACIÓN NETA DE CAJA</td><td>2.124</td><td>1.140</td><td class="neg">-984</td><td class="sub">Posición final ($9.313M) es la más alta histórica. La empresa es financieramente sólida.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<div class="page" id="page-endeudamiento">
+  <div id="kpiStripEnd" class="kpi-strip s5" style="margin-bottom:12px"></div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Composición del Pasivo Total 2025<span class="src-badge" data-src="Estado de Situación Financiera 2025 · Pasivo total $24.938M · Clasificación propia por naturaleza del pasivo (financiero vs. operativo vs. contingente)"><span class="src-icon">📄</span> Balance · Clasificación propia</span> — $24.938M</div><div class="panel-sub">Barras horizontales proporcionales</div></div>
+      <div class="hbars" style="margin-top:12px">
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 13 — Provisiones de garantía contractual CP ($12.995M) + LP ($1.141M) = $14.136M · No son deuda financiera"><div class="hb-lbl">Provisiones garantía</div><div class="hb-track"><div class="hb-fill" style="width:56.7%;background:#1b2a4a">56,7%</div></div><div class="hb-val">$14.136M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 14 — Cuentas por pagar a partes relacionadas IC (ANDRITZ Italy $4.1B, Austria $2.8B, Suiza $1.1B)"><div class="hb-lbl">Acreedores IC</div><div class="hb-track"><div class="hb-fill" style="width:31.9%;background:#ef4444">31,9%</div></div><div class="hb-val">$7.957M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 15 — Beneficios empleados CP ($670M) + Plan sucesión LP ($350M) · Nuevo desde 2025"><div class="hb-lbl">Pasivo laboral</div><div class="hb-track"><div class="hb-fill" style="width:4.1%;background:#f59e0b">4,1%</div></div><div class="hb-val">$1.020M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 16 — Impuesto sobre la renta por pagar período corriente, neto de anticipos"><div class="hb-lbl">Imp. corriente</div><div class="hb-track" style="position:relative;overflow:visible"><div class="hb-fill" style="width:2.2%;background:#8b5cf6;min-width:6px"> </div><span style="position:absolute;left:calc(2.2% + 10px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#8b5cf6;white-space:nowrap">2,2%</span></div><div class="hb-val">$541M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 17 — Pasivos por arrendamiento NIIF 16 (derechos de uso oficinas)"><div class="hb-lbl">Arrendamientos</div><div class="hb-track" style="position:relative;overflow:visible"><div class="hb-fill" style="width:1.2%;background:#21c97a;min-width:6px"> </div><span style="position:absolute;left:calc(1.2% + 10px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#21c97a;white-space:nowrap">1,2%</span></div><div class="hb-val">$289M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Otros pasivos corrientes y no corrientes — anticipos de clientes y retenciones"><div class="hb-lbl">Otros</div><div class="hb-track"><div class="hb-fill" style="width:3.9%;background:#c9d4e8"> </div></div><div class="hb-val">$955M</div></div>
+      </div>
+      <div class="hb-note">⚠ Contexto crítico: 56,7% son provisiones de garantía contractual — no deuda financiera. Sin ellas, el endeudamiento real cae al 34,5%.</div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Financiamiento del Activo — 2024 vs 2025<span class="src-badge" data-src="Cálculo propio: Pasivo Cte / Activo Total, Pasivo LP / Activo Total, Patrimonio / Activo Total · Fuente: Balance General comparativo"><span class="src-icon">🔢</span> Balance · Cálculo %</span></div><div class="panel-sub">% del activo total por fuente</div></div>
+      <div class="leg" style="margin-bottom:6px">
+        <span class="leg-item"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#c9d4e8;flex-shrink:0;margin-right:4px"></span><span style="color:#888">2024 (gris)</span></span>
+        <span style="color:#bbb;font-size:11px;margin:0 4px">·</span>
+        <span style="font-size:10px;font-weight:700;color:#555;margin-right:6px">2025 →</span>
+        <span class="leg-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;flex-shrink:0;margin-right:4px;box-shadow:0 0 5px rgba(239,68,68,.5)"></span>Pas. Corriente — <b style="color:#ef4444">Alto</b></span>
+        <span class="leg-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#00b4d8;flex-shrink:0;margin-right:4px;box-shadow:0 0 5px rgba(0,180,216,.4)"></span>Pas. LP — <b style="color:#00b4d8">Bajo ✓</b></span>
+        <span class="leg-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#21c97a;flex-shrink:0;margin-right:4px;box-shadow:0 0 5px rgba(33,201,122,.5)"></span>Patrimonio — <b style="color:#21c97a">Positivo ✓</b></span>
+      </div>
+      <div class="chart-wrap" style="height:200px"><canvas id="estruturaChart" data-tip="Estructura de financiamiento del activo en 2024 vs 2025. El pasivo corriente financia el 73,7% del activo (principalmente provisiones de garantía), el LP el 5,7% y el patrimonio el 20,6%." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Indicadores de Endeudamiento — Análisis Completo<span class="src-badge" data-src="Cálculo propio aplicando fórmulas estándar de análisis financiero sobre el Balance General 2024-2025 · Referencias: Ortiz Anaya H. — Análisis Financiero Aplicado · NIIF Plenas"><span class="src-icon">🔢</span> Balance · Ortiz Anaya · NIIF</span></div><div class="panel-sub">Semáforos automáticos basados en umbrales académicos NIIF / análisis financiero</div></div>
+    <div class="tw"><table class="ind-table">
+      <thead><tr><th style="width:20%;text-align:left">Indicador</th><th style="width:15%;text-align:left">Fórmula</th><th style="width:7%">2024</th><th style="width:7%">2025</th><th style="width:9%">Señal</th><th style="text-align:left">Interpretación</th></tr></thead>
+      <tbody>
+        <tr><td>Razón de independencia financiera<span class="ind-formula">Patrimonio / Activo total</span></td><td class="ci">6.171/27.776 → 6.483/31.421</td><td class="cn">22,2%</td><td class="cn">20,6%</td><td class="cn"><span class="badge warn">Bajo</span></td><td class="ci">Solo 20,6% financiado por propietarios (óptimo &gt;40%). Tendencia decreciente. El crecimiento de activos operativos supera la generación de utilidades.</td></tr>
+        <tr><td>Endeudamiento total<span class="ind-formula">Pasivo total / Activo total</span></td><td class="ci">21.605/27.776 → 24.938/31.421</td><td class="cn">77,8%</td><td class="cn">79,4%</td><td class="cn"><span class="badge alert">Alto*</span></td><td class="ci">79,4% aparente. Sin provisiones de garantía: 34,5% real — por debajo del umbral de riesgo. Nota: las provisiones de garantía ($14.136M) son obligaciones contractuales contingentes, no deuda financiera exigible por un acreedor.</td></tr>
+        <tr><td>Endeudamiento a corto plazo<span class="ind-formula">Pasivo corriente / Pasivo total</span></td><td class="ci">20.039/21.605 → 23.158/24.938</td><td class="cn">92,7%</td><td class="cn">92,9%</td><td class="cn"><span class="badge warn">Vigilar</span></td><td class="ci">92,9% vence en CP. Provisiones de garantía explican el 56,1% — su naturaleza reduce el riesgo real de refinanciación.</td></tr>
+        <tr><td>Apalancamiento a largo plazo<span class="ind-formula">Pasivo LP / Pasivo total</span></td><td class="ci">1.565/21.605 → 1.780/24.938</td><td class="cn">7,2%</td><td class="cn">7,1%</td><td class="cn"><span class="badge ok">Bajo</span></td><td class="ci">Solo 7,1% de la deuda es LP. Sin créditos bancarios LP — fortaleza estructural que reduce riesgo de refinanciación.</td></tr>
+        <tr><td>Financiación con proveedores<span class="ind-formula">Proveedores / Pasivo total</span></td><td class="ci">3.534/21.605 → 7.957/24.938</td><td class="cn">16,4%</td><td class="cn">31,9%</td><td class="cn"><span class="badge warn">Sube</span></td><td class="ci">Acreedores IC (Italia, Austria, Suiza) casi se duplicaron como % del pasivo. Riesgo de condiciones desfavorables si el grupo cambia política.</td></tr>
+        <tr><td>Financiación con oblig. financieras<span class="ind-formula">Oblig. financieras / Pasivo total</span></td><td class="ci">271/21.605 → 289/24.938</td><td class="cn">1,3%</td><td class="cn">1,2%</td><td class="cn"><span class="badge ok">Mínimo</span></td><td class="ci">Prácticamente cero. Sin créditos bancarios LP — autonomía financiera excepcional frente al mercado de deuda.</td></tr>
+        <tr><td>Financiación con pasivos laborales<span class="ind-formula">Oblig. laborales / Pasivo total</span></td><td class="ci">821/21.605 → 1.020/24.938</td><td class="cn">3,8%</td><td class="cn">4,1%</td><td class="cn"><span class="badge ok">Normal</span></td><td class="ci">Plan de sucesión LP ($350M) incorporado en 2025. Nivel manejable dentro del rango normal.</td></tr>
+        <tr><td>Financiación con impuestos<span class="ind-formula">Impuestos por pagar / Pasivo total</span></td><td class="ci">1.022/21.605 → 541/24.938</td><td class="cn">4,7%</td><td class="cn">2,2%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">Reducción significativa por anticipo tributario 2024 y compensaciones. Señal de gestión tributaria activa.</td></tr>
+        <tr><td>Laverage total<span class="ind-formula">Pasivo total / Patrimonio</span></td><td class="ci">21.605/6.171 → 24.938/6.483</td><td class="cn">3,50x</td><td class="cn">3,85x</td><td class="cn"><span class="badge alert">Alto*</span></td><td class="ci">$385 de pasivo por cada $100 de patrimonio. Ajustado: sin provisiones de garantía, el ratio es $60 de deuda financiera por $100 de patrimonio — nivel conservador.</td></tr>
+        <tr><td>Estructura corriente<span class="ind-formula">Pasivo corriente / Activo total</span></td><td class="ci">20.039/27.776 → 23.158/31.421</td><td class="cn">72,1%</td><td class="cn">73,7%</td><td class="cn"><span class="badge warn">Vigilar</span></td><td class="ci">73,7% del activo financiado con CP. Alto por provisiones de garantía — la caja disponible garantiza operaciones.</td></tr>
+        <tr><td>Estructura de capital<span class="ind-formula">(Pasivo LP + Patrimonio) / Activo total</span></td><td class="ci">(1.565+6.171)/27.776 → (1.780+6.483)/31.421</td><td class="cn">27,9%</td><td class="cn">26,3%</td><td class="cn"><span class="badge warn">Bajo</span></td><td class="ci">Solo 26,3% con financiación LP. El crecimiento se financia con deuda corriente — principalmente operativa.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="page" id="page-liquidez">
+  <div id="kpiStripLiq" class="kpi-strip s5" style="margin-bottom:12px"></div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Composición Activo Corriente 2025<span class="src-badge" data-src="Estado de Situación Financiera 2025 · Activo Corriente $27.372M · Nota 6 Efectivo, Nota 7 Cartera, Nota 8 Inventarios, Nota 11 Impuestos corrientes"><span class="src-icon">📄</span> Balance · Notas 6-11</span></div><div class="panel-sub">% sobre total ($27.372M)</div></div>
+      <div class="hbars" style="margin-top:12px">
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 7 — Cuentas por cobrar clientes Colombia ($4.3B) y Perú ($6.66B), neto de deterioro. Rotación ~60 días"><div class="hb-lbl">Cuentas x cobrar</div><div class="hb-track"><div class="hb-fill" style="width:40.1%;background:#00b4d8">40,1%</div></div><div class="hb-val">$10.986M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 6 — Efectivo en bancos: Colombia (Bancolombia, Davivienda), Perú (BCP, BBVA), Panamá (Banistmo). Sin restricciones"><div class="hb-lbl">Efectivo</div><div class="hb-track"><div class="hb-fill" style="width:34.0%;background:#21c97a">34,0%</div></div><div class="hb-val">$9.313M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 8 — Work In Progress Colombia ($2.8B) y materiales Perú ($1.35B) para proyectos activos"><div class="hb-lbl">Inventarios</div><div class="hb-track"><div class="hb-fill" style="width:15.2%;background:#f59e0b">15,2%</div></div><div class="hb-val">$4.152M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Nota 11 — Retenciones en la fuente, IVA descontable y saldos a favor DIAN, neto de impuesto por pagar"><div class="hb-lbl">Imp. corrientes</div><div class="hb-track"><div class="hb-fill" style="width:9.7%;background:#8b5cf6">9,7%</div></div><div class="hb-val">$2.658M</div></div>
+        <div class="hb-row" data-src="E. Situación Financiera 2025 · Otros activos corrientes — anticipos a proveedores para proyectos en ejecución"><div class="hb-lbl">Otros corrientes</div><div class="hb-track" style="position:relative;overflow:visible"><div class="hb-fill" style="width:1.0%;background:#c9d4e8;min-width:6px"> </div><span style="position:absolute;left:calc(1.0% + 10px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#888;white-space:nowrap">1,0%</span></div><div class="hb-val">$263M</div></div>
+      </div>
+      <div class="hb-note">⚠ Inventarios en 15,2% del AC (+61,7%) presionan la prueba ácida hacia el límite 1,00x. <span class="gls" data-gls="KTO (Capital de Trabajo Operativo): Cuentas por cobrar + Inventarios = $10.986M + $4.152M = $15.138M. Recursos corrientes directamente comprometidos en el ciclo operativo del negocio.">KTO</span> (cartera + inventarios) representa el 55,3% del activo corriente.</div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Indicadores de Liquidez — Comparativo<span class="src-badge" data-src="Cálculo propio sobre Balance General 2024-2025 · Razón corriente, Prueba ácida, Liquidez inmediata · Fórmulas: Ortiz Anaya / Van Horne &amp; Wachowicz"><span class="src-icon">🔢</span> Balance · Ortiz Anaya</span></div><div class="panel-sub">2024 vs 2025</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#21c97a"></span>2025 — Óptimo</span><span class="leg-item"><span class="leg-dot" style="background:#f59e0b"></span>2025 — Vigilar</span><span class="leg-item"><span class="leg-dot" style="background:#ef4444"></span>2025 — Alerta</span></div>
+      <div class="chart-wrap" style="height:230px"><canvas id="liquidezChart" data-tip="Comparativo de los principales indicadores de liquidez. La línea de referencia implícita en el sector EPC: razón corriente 1,10-1,40x, prueba ácida 0,90-1,20x. Las barras 2025 en colores fríos indican deterioro vs 2024." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+
+  
+  <div class="panel full" style="margin-bottom:12px">
+    <div class="panel-hd"><div class="panel-title">Benchmark Sectorial<span class="src-badge" data-src="Fuentes externas: Damodaran NYU 2024 (Engineering Services), IBISWorld — Engineering Services Industry Report, Duff &amp; Phelps Valuation Handbook 2024"><span class="src-icon">📚</span> Damodaran · IBISWorld · D&amp;P</span> — Ingeniería EPC / Servicios de Proyectos</div><div class="panel-sub">Rangos de referencia: Damodaran NYU, IBISWorld, Duff &amp; Phelps · Los indicadores solo tienen significado en contexto sectorial</div></div>
+    <table class="bm-table">
+      <thead><tr><th>Indicador</th><th>Rango Sector<br><span style="font-style:italic;font-weight:400">EPC Ingeniería</span></th><th>ANDRITZ 2024</th><th>ANDRITZ 2025</th><th>Posición</th><th style="text-align:left">Lectura analítica</th></tr></thead>
+      <tbody>
+        <tr><td>Razón corriente</td><td class="bm-sector">1,10x – 1,40x</td><td>1,26x</td><td class="bm-warn">1,18x</td><td><span class="badge ok">Dentro del rango</span></td><td style="font-size:11.5px;color:#555;text-align:left">1,18x está en el tercio inferior del rango sectorial. El sector EPC tolera ratios bajos por el cobro por avance de obra.</td></tr>
+        <tr><td>Prueba ácida</td><td class="bm-sector">0,90x – 1,20x</td><td>1,13x</td><td class="bm-warn">1,00x</td><td><span class="badge warn">Límite inferior</span></td><td style="font-size:11.5px;color:#555;text-align:left">Cayó al límite inferior del rango. La acumulación de inventario WIP es la causa. Exige vigilancia de cobros.</td></tr>
+        <tr><td>Margen operativo</td><td class="bm-sector">3,0% – 6,0%</td><td>2,80%</td><td class="bm-alert">2,36%</td><td><span class="badge alert">Por debajo del sector</span></td><td style="font-size:11.5px;color:#555;text-align:left">Ambos años están por debajo del mínimo sectorial. Recuperar el 3,0% es el objetivo mínimo para 2026.</td></tr>
+        <tr><td>Margen bruto</td><td class="bm-sector">25,0% – 40,0%</td><td>30,8%</td><td class="bm-ok">34,2%</td><td><span class="badge ok">Rango medio-alto</span></td><td style="font-size:11.5px;color:#555;text-align:left">34,2% ubica a la empresa en el cuartil superior — refleja la calidad del portafolio de Servicios CH.</td></tr>
+        <tr><td>Endeudamiento financiero real</td><td class="bm-sector">20% – 50%</td><td>1,3%</td><td class="bm-ok">1,2%</td><td><span class="badge ok">Muy por debajo — fortaleza</span></td><td style="font-size:11.5px;color:#555;text-align:left">Endeudamiento financiero real prácticamente nulo. Posición excepcional con capacidad de endeudarse si necesita.</td></tr>
+        <tr><td>Rotación de cartera</td><td class="bm-sector">45 – 75 días</td><td>~60 días</td><td class="bm-ok">~60 días</td><td><span class="badge ok">Dentro del rango</span></td><td style="font-size:11.5px;color:#555;text-align:left">Gestión de cobro eficiente dada la naturaleza y tamaño de los contratos.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Indicadores de Liquidez — Análisis Completo<span class="src-badge" data-src="Cálculo propio aplicando fórmulas estándar sobre Balance General y E. Resultados 2024-2025 · Capital de Trabajo Neto Operativo (<span class="gls" data-gls="KTNO (Capital de Trabajo Neto Operativo): KTO (Deudores + Inventarios) − Proveedores = $15.138M − $7.957M = $7.181M. Representa los recursos propios comprometidos en la operación que no son financiados por proveedores.">KTNO</span>) según metodología Ortiz Anaya"><span class="src-icon">🔢</span> Balance + Resultados · KTNO</span></div><div class="panel-sub">Incluye Capital de Trabajo y variantes operativas</div></div>
+    <div class="tw"><table class="ind-table">
+      <thead><tr><th style="width:20%;text-align:left">Indicador</th><th style="width:15%;text-align:left">Fórmula</th><th style="width:8%">2024</th><th style="width:8%">2025</th><th style="width:9%">Señal</th><th style="text-align:left">Interpretación</th></tr></thead>
+      <tbody>
+        <tr><td>KT — Capital de trabajo<span class="ind-formula">Activo corriente</span></td><td class="ci">$25.291M → $27.372M</td><td class="cn">$25.291M</td><td class="cn">$27.372M</td><td class="cn"><span class="badge ok">Crece</span></td><td class="ci">Los recursos disponibles en el corto plazo crecieron $2.081M. La caja y los inventarios de proyectos son los que más crecen, señal de mayor actividad operativa.</td></tr>
+        <tr><td>KTN — Capital de trabajo neto<span class="ind-formula">Activo corriente − Pasivo corriente</span></td><td class="ci">25.291−20.039 → 27.372−23.158</td><td class="cn">$5.252M</td><td class="cn">$4.214M</td><td class="cn"><span class="badge warn">Cae</span></td><td class="ci">El margen de seguridad corriente se redujo $1.038M principalmente porque las cuentas por pagar a proveedores del grupo (IC) aumentaron $4.423M. Tendencia que debe monitorearse en 2026.</td></tr>
+        <tr><td>KTO — Capital de trabajo operativo<span class="ind-formula">Deudores + Inventarios</span></td><td class="ci">10.826+2.567 → 10.986+4.152</td><td class="cn">$13.393M</td><td class="cn">$15.138M</td><td class="cn"><span class="badge info">Crece</span></td><td class="ci">Recursos operativos comprometidos en proyectos +$1.745M. Refleja backlog robusto.</td></tr>
+        <tr><td>KTNO — Capital de trabajo neto operativo<span class="ind-formula">KTO − Proveedores</span></td><td class="ci">13.393−3.534 → 15.138−7.957</td><td class="cn">$9.859M</td><td class="cn">$7.181M</td><td class="cn"><span class="badge warn">Cae</span></td><td class="ci">La empresa financia $7.181M con recursos propios. Cayó porque proveedores IC financian más operación.</td></tr>
+        <tr><td>Productividad KTNO<span class="ind-formula">KTNO / Ventas</span></td><td class="ci">9.859/29.278 → 7.181/39.206</td><td class="cn">33,7%</td><td class="cn">18,3%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">Reducción de 15,4 pp — se necesitan menos recursos propios por peso vendido. Mejora por mayor crédito IC.</td></tr>
+        <tr><td>Razón corriente<span class="ind-formula">Activo corriente / Pasivo corriente</span></td><td class="ci">25.291/20.039 → 27.372/23.158</td><td class="cn">1,26x</td><td class="cn">1,18x</td><td class="cn"><span class="badge warn">Reduce</span></td><td class="ci">Se deterioró 0,08x por alza de proveedores IC. Dentro del rango sectorial (1,10x-1,40x) pero en tercio inferior.</td></tr>
+        <tr><td>Prueba ácida<span class="ind-formula">(AC − Inventarios) / Pasivo corriente</span></td><td class="ci">(25.291−2.567)/20.039 → (27.372−4.152)/23.158</td><td class="cn">1,13x</td><td class="cn">1,00x</td><td class="cn"><span class="badge warn">Límite</span></td><td class="ci">Exactamente en el límite mínimo aceptable: por cada $1 de deuda corriente hay exactamente $1 de activo líquido sin inventarios. El crecimiento de inventarios del 61,7% redujo este colchón. Vigilar la rotación de inventarios.</td></tr>
+        <tr><td>Liquidez inmediata 1er grado<span class="ind-formula">Efectivo / Pasivo corriente</span></td><td class="ci">8.173/20.039 → 9.313/23.158</td><td class="cn">0,41x</td><td class="cn">0,40x</td><td class="cn"><span class="badge ok">Adecuado</span></td><td class="ci">40% del pasivo corriente cubierto solo con efectivo. Posición de caja sólida; naturaleza de provisiones reduce el riesgo.</td></tr>
+        <tr><td>Fondo de maniobra sobre deudas CP<span class="ind-formula">KTN / Pasivo corriente</span></td><td class="ci">5.252/20.039 → 4.214/23.158</td><td class="cn">0,26x</td><td class="cn">0,18x</td><td class="cn"><span class="badge alert">Bajo</span></td><td class="ci">Rango óptimo 0,50x-1,00x. El KTN cubre solo 18% del pasivo corriente — bien por debajo. Tendencia decreciente preocupante.</td></tr>
+        <tr><td>Solvencia financiera<span class="ind-formula">Activo total / Pasivo total</span></td><td class="ci">27.776/21.605 → 31.421/24.938</td><td class="cn">1,29x</td><td class="cn">1,26x</td><td class="cn"><span class="badge warn">Reduce</span></td><td class="ci">Por cada peso de deuda hay $1,26 en activos. Positivo pero en reducción. Mínimo recomendado 1,50x.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<div class="page" id="page-rentabilidad">
+  <div id="kpiStripRent" class="kpi-strip s4" style="margin-bottom:12px"></div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Cascada de Márgenes 2025<span class="src-badge" data-src="Cálculo propio: cada componente como % sobre ingresos operacionales $39.206M · Fuente: E. Resultados 2025 línea por línea"><span class="src-icon">🔢</span> E. Resultados · % s/ingresos</span></div><div class="panel-sub">Del margen bruto al margen neto — % sobre ingresos</div></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="rentCascadaChart" data-tip="Cascada de márgenes: muestra cómo cada componente de gastos &quot;consume&quot; el margen bruto hasta llegar al margen neto. El margen bruto (34,2%) se ve erosionado principalmente por gastos de personal (22,6%) y otros gastos (14,1%)." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Indicadores de Rentabilidad — 2024 vs 2025<span class="src-badge" data-src="Cálculo propio sobre E. Resultados y Balance General 2024-2025 · Márgenes = Utilidad / Ingresos · ROA = U. Neta / Activo Total · ROE = U. Neta / Patrimonio · Fórmulas: CFA Institute"><span class="src-icon">🔢</span> E.Resultados + Balance · CFA</span></div><div class="panel-sub">% comparativo · verde = mejora, rojo = deterioro</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#21c97a"></span>2025 — Mejora</span><span class="leg-item"><span class="leg-dot" style="background:#ef4444"></span>2025 — Deterioro</span></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="rentChart" data-tip="Comparativo de indicadores de rentabilidad. Verde = mejoró en 2025, amarillo/rojo = empeoró. El margen operativo es el único que cae a pesar del crecimiento de ingresos — por el aumento descontrolado de gastos indirectos." style="cursor:help"></canvas></div>
+    </div>
+  </div>
+  <div class="panel full">
+    <div class="panel-hd"><div class="panel-title">Indicadores de Rentabilidad — Análisis Completo<span class="src-badge" data-src="Cálculo propio · Fórmulas CFA Institute Level 1 — Financial Statement Analysis · <span class="gls" data-gls="Descomposición DuPont (3 factores): ROE = Margen Neto × Rotación de Activos × Multiplicador Financiero. Para ANDRITZ 2025: 0,80% × 1,248x × 4,85x = 4,81%. Permite identificar qué palanca impulsa o frena el ROE.">DuPont</span> decomposition: Margen neto × Rotación activos × Multiplicador equity"><span class="src-icon">🔢</span> E.Resultados + Balance · CFA</span> con DuPont</div><div class="panel-sub">Estándares CFA/CGMA · <span class="gls" data-gls="ROE (Return on Equity): Utilidad Neta / Patrimonio = $312M / $6.483M = 4,81%. Mide la rentabilidad generada para los propietarios. Meta de largo plazo para ANDRITZ: superar el 8% (costo de capital equity).">ROE</span> descompuesto DuPont de 3 factores</div></div>
+    <div class="tw"><table class="ind-table">
+      <thead><tr><th style="width:20%;text-align:left">Indicador</th><th style="width:15%;text-align:left">Fórmula</th><th style="width:7%">2024</th><th style="width:7%">2025</th><th style="width:9%">Señal</th><th style="text-align:left">Interpretación</th></tr></thead>
+      <tbody>
+        <tr><td>Margen bruto<span class="ind-formula">Utilidad bruta / Ventas</span></td><td class="ci">9.031/29.278 → 13.409/39.206</td><td class="cn">30,8%</td><td class="cn">34,2%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">Mejoró +3,4 puntos porcentuales. El cambio en la mezcla de negocios — más servicios (mayor margen) y menos equipos PTAR (menor margen) — junto con la eficiencia en costos directos, explican esta mejora. Mejor resultado reciente.</td></tr>
+        <tr><td>Margen operativo (UAII)<span class="ind-formula">UAII / Ventas</span></td><td class="ci">819/29.278 → 925/39.206</td><td class="cn">2,80%</td><td class="cn">2,36%</td><td class="cn"><span class="badge alert">Cae</span></td><td class="ci">⚠ Alerta: el margen de la operación cayó a pesar de vender más. El problema está en que los gastos administrativos e indirectos crecieron al doble del ritmo de los ingresos, eliminando la ganancia obtenida en costos directos. Está un 21% por debajo del mínimo del sector.</td></tr>
+        <tr><td>Margen neto<span class="ind-formula">Utilidad neta / Ventas</span></td><td class="ci">201/29.278 → 312/39.206</td><td class="cn">0,69%</td><td class="cn">0,80%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">Mejora por reducción del impuesto efectivo (diferido Perú) y reversión del costo financiero. Efecto no recurrente incluido.</td></tr>
+        <tr><td>Carga de costos de ventas<span class="ind-formula">Costo de ventas / Ventas</span></td><td class="ci">20.247/29.278 → 25.797/39.206</td><td class="cn">69,2%</td><td class="cn">65,8%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">Costos directos bajan 3,4 pp como % de ventas. Principal factor positivo de rentabilidad 2025.</td></tr>
+        <tr><td>Margen <span class="gls" data-gls="EBITDA: Earnings Before Interest, Taxes, Depreciation and Amortization = UAII + Depreciación + Amortización. Aproxima el flujo de caja operativo. Para ANDRITZ 2025: $925M + $666M = $1.591M.">EBITDA</span><span class="ind-formula">(UAII + D&amp;A) / Ventas</span></td><td class="ci">(819+500)/29.278 → (925+666)/39.206</td><td class="cn">4,51%</td><td class="cn">4,06%</td><td class="cn"><span class="badge warn">Leve baja</span></td><td class="ci">EBITDA 2025: $1.591M (+20,6% absoluto). Cae en % por el fuerte crecimiento de gastos operativos.</td></tr>
+        <tr><td><span class="gls" data-gls="ROA (Return on Assets): Utilidad Neta / Activo Total = $312M / $31.421M = 0,99%. Mide la eficiencia con que la empresa usa todos sus activos para generar utilidad. Para superar el <span class="gls" data-gls="WACC (Weighted Average Cost of Capital / Costo de Capital Promedio Ponderado): Tasa mínima de retorno que una empresa debe generar para crear valor para sus accionistas y acreedores. Para ANDRITZ se estima entre 8-10%.">WACC</span> (~8-10%) se requieren márgenes operativos mayores.">ROA</span><span class="ind-formula">Utilidad neta / Activo total</span></td><td class="ci">201/27.776 → 312/31.421</td><td class="cn">0,72%</td><td class="cn">0,99%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">$0,99 de utilidad por cada $100 en activos. Mejora significativa. Para superar WACC (~8-10%) se requieren mayores márgenes operativos.</td></tr>
+        <tr><td>ROE<span class="ind-formula">Utilidad neta / Patrimonio</span></td><td class="ci">201/6.171 → 312/6.483</td><td class="cn">3,26%</td><td class="cn">4,81%</td><td class="cn"><span class="badge ok">Mejora</span></td><td class="ci">+1,55 pp. El apalancamiento (D/E 3,85x) amplifica el ROE respecto al ROA. Meta LP: superar el 8% (costo de capital equity).</td></tr>
+        <tr><td>DuPont ROE = Mg.Neto × Rot.Activos × Multiplicador<span class="ind-formula">3-factor DuPont decomposition</span></td><td class="ci">0,69%×1,054×4,50x → 0,80%×1,248×4,85x</td><td class="cn">3,26%</td><td class="cn">4,81%</td><td class="cn"><span class="badge info">Análisis</span></td><td class="ci">Los 3 factores DuPont mejoran en 2025: margen neto (+16% relativo), rotación de activos (+18,4%) y multiplicador (+7,8%). El ROE mejora por las tres palancas simultáneamente.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<div class="page" id="page-diagnostico">
+
+  
+  <div class="sec-div" style="--c:var(--teal)" data-tip="El scorecard evalúa 8 dimensiones financieras con semáforos automáticos. Verde = en rango óptimo, Amarillo = requiere vigilancia, Rojo = fuera del benchmark sectorial. Pase el cursor sobre cada tarjeta para ver la fórmula y fuente del indicador.">Scorecard de Salud Financiera — ANDRITZ Hydro Ltda. 2025</div>
+  <div class="scorecard" style="grid-template-columns:repeat(4,1fr)">
+    <div class="sc ok" data-tip="Ingresos 2025: $39.206M vs $24: $29.278M · Fuente: E. Resultados · Cálculo: (39.206−29.278)/29.278 · Benchmark EPC: 5-15% anual → Supera ampliamente"><div class="sc-dim">Crecimiento</div><div class="sc-val">+33,9%</div><span class="sc-sig">● Sobresaliente</span></div>
+    <div class="sc ok" data-tip="Utilidad Bruta $13.409M / Ingresos $39.206M = 34,2% · Fuente: E. Resultados · 2024: 30,8% → Mejora +3,4 pp · Rango sector EPC: 25-40% → Cuartil superior"><div class="sc-dim">Margen Bruto</div><div class="sc-val">34,2%</div><span class="sc-sig">● Sólido</span></div>
+    <div class="sc alert" data-tip="UAII $925M / Ingresos $39.206M = 2,36% · Fuente: E. Resultados · 2024: 2,80% → Cae -0,44 pp · Benchmark mínimo sector EPC: 3,0% → 21% POR DEBAJO del mínimo"><div class="sc-dim">Margen Operativo</div><div class="sc-val">2,36%</div><span class="sc-sig">● Alerta — cae</span></div>
+    <div class="sc ok" data-tip="Efectivo y equivalentes al 31/12/2025 · Fuente: Balance General Nota 6 · Histórico máximo · Cubre 4,8 meses de gastos operativos · Sin restricciones de uso"><div class="sc-dim">Posición de Caja</div><div class="sc-val">$9.313M</div><span class="sc-sig">● Muy sólida</span></div>
+    <div class="sc warn" data-tip="(Pasivo Total $24.938M − Provisiones garantía $14.136M) / Activo Total $31.421M = 34,5% · Fuente: Balance General · El 79,4% que parece alto incluye $14.136M en garantías contractuales que no son deuda a un banco. Descontando esas provisiones, el endeudamiento financiero real es solo el 34,5% — un nivel conservador."><div class="sc-dim">Deuda Real (sin provisiones)</div><div class="sc-val">34,5%</div><span class="sc-sig">● Adecuado</span></div>
+    <div class="sc warn" data-tip="(AC $27.372M − Inventarios $4.152M) / Pasivo Cte $23.158M = 1,00x · Fuente: Balance General · 2024: 1,13x → Cae -0,13x · Rango sector EPC: 0,90-1,20x → Límite inferior"><div class="sc-dim">Prueba Ácida</div><div class="sc-val">1,00x</div><span class="sc-sig">● Límite mínimo</span></div>
+    <div class="sc ok" data-tip="Free Cash Flow = Flujo Operativo Neto $1.741M − CAPEX $583M = $1.158M · Fuente: E. Flujos Efectivo · 2024: $2.454M → Cae -52,8% principalmente por efecto diferido Perú no recurrente"><div class="sc-dim">FCF</div><div class="sc-val">$1.158M</div><span class="sc-sig">● Positivo</span></div>
+    <div class="sc ok" data-tip="Dictamen de auditoría sin salvedades emitido por GBP Audit S.A.S. · Estándar: NIIF Plenas (IFRS Full) · Período: 1 enero – 31 diciembre 2025 · Firma independiente al grupo ANDRITZ"><div class="sc-dim">Auditoría</div><div class="sc-val">Limpia</div><span class="sc-sig">● Sin salvedades</span></div>
+  </div>
+
+  
+  <div class="narrative">
+    <h4>Narrativa Financiera Integral — Diagnóstico 2025</h4>
+    <p><strong>El año 2025 presenta una situación aparentemente contradictoria que requiere una lectura cuidadosa:</strong> ANDRITZ Hydro Ltda. creció sus ingresos un 33,9% y su utilidad neta un 55,2%, mientras su margen operativo se comprimió. Esto se explica porque los gastos operativos —viáticos, servicios externos y gastos de oficina— crecieron al 77,6%, casi el doble de los ingresos, neutralizando la expansión del margen bruto (+3,4 pp).</p>
+    <p><strong>La posición de endeudamiento (79,4%) es contablemente correcta pero que da una imagen distorsionada:</strong> el 56,7% del pasivo son provisiones de garantía contractual. La deuda bancaria es $0. La deuda financiera real (solo arrendamientos) representa el 1,2% del pasivo. Sin las provisiones de garantía, el endeudamiento financiero real cae al 34,5% — un nivel completamente manejable.</p>
+    <p><strong>El riesgo de liquidez es moderado y gestionable:</strong> la prueba ácida en 1,00x y la caja de $9.313M coexisten. El fondo de maniobra (0,18x) está por debajo del óptimo (0,50x), pero la posición de caja cubre 4,8 meses de gastos operativos. El cierre de la Sucursal Perú (2026-2027) es el mayor riesgo, con $6,66B en cobros pendientes y potencial impacto patrimonial hasta -$4B.</p>
+  </div>
+
+  
+  <div class="sec-div" style="--c:var(--green)" data-tip="FODA = Fortalezas, Oportunidades, Debilidades, Amenazas. En este análisis se aplica exclusivamente a variables financieras cuantificables. Cada punto tiene respaldo en los estados financieros auditados 2025. Pase el cursor sobre cada ítem para ver la fuente.">Análisis FODA Financiero</div>
+  <div class="foda">
+    <div class="foda-card f"><div class="foda-hd"><div class="foda-ttl g">✓ Fortalezas</div><span class="foda-chip">6 factores</span></div>
+      <div class="foda-item" data-src="E. Resultados 2025 · Ingresos: $39.206M (2024: $29.278M) · Margen bruto: 34,2% vs 30,8% · Ambos indicadores de mejor período histórico reciente"><span class="foda-dot" style="background:#16a34a"></span>Ingresos +33,9% con expansión margen bruto 30,8% → 34,2%</div>
+      <div class="foda-item" data-src="E. Resultados 2025 · Utilidad neta $312M vs $201M en 2024 · Incluye efecto diferido Perú (-$1.093M impuesto diferido) no recurrente · ROE: 4,81%"><span class="foda-dot" style="background:#16a34a"></span>Utilidad neta +55,2% ($312M) — mayor rentabilidad histórica reciente</div>
+      <div class="foda-item" data-src="Balance General 2025 · Nota 6 Efectivo · Bancos Colombia, Perú y Panamá · Cubre 4,8 meses de gastos · FCF: $1.158M (flujo operativo − CAPEX)"><span class="foda-dot" style="background:#16a34a"></span>Caja $9.313M sin restricciones — posición histórica máxima</div>
+      <div class="foda-item" data-src="Balance General 2025 · Pasivo no corriente: solo arrendamientos NIIF 16 ($289M) + beneficios empleados ($1.141M) · Obligaciones financieras = 1,2% del pasivo total"><span class="foda-dot" style="background:#16a34a"></span>No tiene deudas bancarias de largo plazo — no depende del sistema financiero para operar</div>
+      <div class="foda-item" data-src="Notas EEFF 2025 · Operaciones en Colombia (sede), Sucursal Perú (en cierre), vínculos IC con Austria, Italia, Suiza, Alemania, EE.UU., Brasil y otros"><span class="foda-dot" style="background:#16a34a"></span>Presencia en múltiples países: Colombia, Perú e indirectamente 10+ países a través de la red del grupo ANDRITZ</div>
+      <div class="foda-item" data-src="Dictamen de Auditoría 2025 · Firma: GBP Audit S.A.S. · Tipo: Sin salvedades · Estándar: NIIF Plenas · NIA (Normas Internacionales de Auditoría)"><span class="foda-dot" style="background:#16a34a"></span>Opinión de auditoría limpia — GBP Audit S.A.S.</div>
+    </div>
+    <div class="foda-card o"><div class="foda-hd"><div class="foda-ttl o">⚠ Debilidades</div><span class="foda-chip">5 factores</span></div>
+      <div class="foda-item" data-src="E. Resultados 2025 · Otros gastos operativos: $5.526M (2024: $3.111M) · Δ +$2.415M · Viáticos: +$836M (35% del incremento) · Servicios externos y oficina: resto"><span class="foda-dot" style="background:#c2410c"></span>Otros gastos operativos +77,6% — sin control presupuestal claro</div>
+      <div class="foda-item" data-src="Cálculo propio: UAII $925M / Ingresos $39.206M = 2,36% · Benchmark sector EPC: 3,0%-6,0% (Damodaran NYU, IBISWorld) · Distancia al mínimo: -0,64 pp"><span class="foda-dot" style="background:#c2410c"></span>Margen operativo 2,36% — 21% por debajo del benchmark mínimo sectorial</div>
+      <div class="foda-item" data-src="Balance General 2025 · (AC $27.372M − Inventarios $4.152M) / Pasivo Cte $23.158M = 1,00x · Rango EPC: 0,90x-1,20x · 2024: 1,13x → deterioro por inventarios +61,7%"><span class="foda-dot" style="background:#c2410c"></span>Prueba ácida 1,00x — en el límite mínimo sectorial aceptable</div>
+      <div class="foda-item" data-src="E. Flujos Efectivo 2025 · FCF = Flujo operativo $1.741M − CAPEX $583M = $1.158M · 2024: $2.454M · Caída explicada 107% por efecto diferido Perú no recurrente"><span class="foda-dot" style="background:#c2410c"></span>FCF cae -52,8% — menor generación de caja libre</div>
+      <div class="foda-item" data-src="E. Resultados 2025 · Nota 5 · Maquinaria PTAR: $5.945M (2024: $8.154M) · Participación: 15,2% vs 27,8% en 2024 · Riesgo: sin contratos nuevos adjudicados en 2025"><span class="foda-dot" style="background:#c2410c"></span>PTAR -27,1%: riesgo de backlog 2026 sin nuevos contratos</div>
+    </div>
+    <div class="foda-card d"><div class="foda-hd"><div class="foda-ttl b">→ Oportunidades</div><span class="foda-chip">4 factores</span></div>
+      <div class="foda-item" data-src="Oportunidad de mercado · Plan Energético Nacional Colombia 2022-2052 (UPME) · El 70% de la generación eléctrica colombiana es hidráulica · Mayor demanda de mantenimiento en centrales existentes como alternativa a nueva construcción"><span class="foda-dot" style="background:#1d4ed8"></span>Transición energética: demanda creciente de mantenimiento en centrales existentes</div>
+      <div class="foda-item" data-src="UPME — Plan de Expansión de Referencia Generación-Transmisión 2022-2036 · Proyectos de modernización CH existentes · Mercado potencial estimado >$500M USD en Colombia"><span class="foda-dot" style="background:#1d4ed8"></span>Plan Energético Nacional: expansión contratos CH en Colombia</div>
+      <div class="foda-item" data-src="Balance General 2025 · Nota 7 Cuentas por cobrar · Cartera Sucursal Perú: $6,66B pendientes de cobro · Riesgo: recuperación en contexto de cierre operativo 2026-2027"><span class="foda-dot" style="background:#1d4ed8"></span>Recuperación cobros Perú $6,66B antes del cierre 2026-2027</div>
+      <div class="foda-item" data-src="Análisis prospectivo propio · Tendencia sector: Industry 4.0 en O&M hidroeléctrico · Potencial de márgenes superiores (servicios digitales vs. físicos) · No materializado en 2025"><span class="foda-dot" style="background:#1d4ed8"></span>Digitalización: contratos de monitoreo predictivo remoto (mayor margen)</div>
+    </div>
+    <div class="foda-card a"><div class="foda-hd"><div class="foda-ttl r">✕ Amenazas</div><span class="foda-chip">4 factores</span></div>
+      <div class="foda-item" data-src="Notas EEFF 2025 · Decisión corporativa ANDRITZ AG · Pérdida operativa Perú 2025: -$710M · Impactos: cobros $6,66B en riesgo + diferido $2,828M reversible + costos de cierre"><span class="foda-dot" style="background:#b91c1c"></span>Cierre Suc. Perú 2026-2027: pérdida operativa -$710M + impactos patrimoniales</div>
+      <div class="foda-item" data-src="Balance General 2025 · Nota 14 · Acreedores IC: $7.957M (2024: $3.534M) · Proveedores: ANDRITZ Italy $4.1B, Austria $2.8B, Suiza $1.1B · Riesgo TRM EUR/COP"><span class="foda-dot" style="background:#b91c1c"></span>Concentración IC Italy/Austria: acreedores +125%, riesgo EUR/COP</div>
+      <div class="foda-item" data-src="Notas EEFF 2025 · Contingencia fiscal DIAN · Sanción total: $165,7M · Pagado: $26,1M · Saldo pendiente: $139,6M · En proceso de negociación / recurso ante la entidad"><span class="foda-dot" style="background:#b91c1c"></span>Proceso DIAN: sanción $165,7M (pagada parcialmente $26,1M)</div>
+      <div class="foda-item" data-src="Balance General 2025 · Nota 13 Provisiones · CP: $12.995M + LP: $1.141M = $14.136M total · Representan garantías contractuales por proyectos ejecutados · Riesgo: ejecución si hay reclamaciones"><span class="foda-dot" style="background:#b91c1c"></span>Provisiones garantía $14,1B (56% pasivos) — ejecución contractual latente</div>
+    </div>
+  </div>
+
+  
+  <div class="sec-div" style="--c:var(--red)" data-tip="ERM = Enterprise Risk Management (Gestión de Riesgos Empresariales). Los riesgos están ordenados por impacto potencial cuantificado en el resultado y el patrimonio, no por probabilidad. Metodología: CGMA — Chartered Global Management Accountant.">Ranking de Riesgos Financieros — Priorización por Impacto (ERM)</div>
+  <div style="font-size:11.5px;color:#666;margin-bottom:10px;line-height:1.5">Ordenados por <strong>impacto potencial en resultado y sostenibilidad financiera</strong>. Estándar CGMA / Enterprise Risk Management para comunicación ejecutiva.</div>
+  <div class="risk-rank">
+    <div class="rr-item crit"><div class="rr-rank">1</div><div class="rr-body">
+      <div class="rr-header"><div class="rr-ttl" data-tip="Fuente: Estado de Resultados 2025 · UAII $925M / Ingresos $39.206M = 2,36% vs 2,80% en 2024 · Benchmark sector EPC mínimo: 3,0% (Damodaran NYU) · Simulación: si cae -0,44 pp/año más, en 2027 llegaría a 1,48% — nivel de quiebra operativa.">El margen operativo se comprime año a año — riesgo interno controlable</div><span class="rr-chip">Crítico · Impacto inmediato</span></div>
+      <div class="rr-cause">Los gastos operativos crecen al doble de los ingresos (+77,6% vs +33,9%). Si esta tendencia continúa un año más, el margen operativo podría caer por debajo del 1,5%, comprometiendo la viabilidad de absorber cualquier contracción. <strong>Este es el único riesgo que depende exclusivamente de decisiones internas</strong> y puede gestionarse en 12 meses.</div>
+      <div class="rr-metric"><span class="rr-m" data-src="UAII $925M / Ingresos $39.206M · E. Resultados 2025">Margen op.: 2,36%</span><span class="rr-m" data-src="Damodaran NYU — Engineering Services 2024 · IBISWorld EPC Report">Benchmark mín.: 3,0%</span><span class="rr-m" data-src="E. Resultados 2025 · Línea "Otros gastos operativos" (2024: $3.111M)">Otros gastos: $5.526M (+$2.415M)</span></div>
+    </div><div class="rr-impact">Impacto:<br>−$250M UAII<br>si persiste</div></div>
+    <div class="rr-item crit"><div class="rr-rank">2</div><div class="rr-body">
+      <div class="rr-header"><div class="rr-ttl" data-tip="Fuente: Balance General 2025 · Nota 7 Cuentas por cobrar Suc. Perú · Cierre planeado 2026-2027 · Diferido reversible $2,828M (Nota 10) · Pérdida operativa 2025: -$710M · El impacto combinado podría superar las utilidades acumuladas de 3 años.">Cobros pendientes en Perú — riesgo de no recuperar $6,66B al cierre</div><span class="rr-chip">Crítico · Horizonte 2026-2027</span></div>
+      <div class="rr-cause">Cierre en 2026-2027 implica: (1) recuperar $6,66B en cuentas por cobrar en contexto de liquidación; (2) posible deterioro del activo diferido ($2,828M); (3) costos de cierre no completamente provisionados. El impacto combinado podría consumir las utilidades acumuladas de 2-3 ejercicios.</div>
+      <div class="rr-metric"><span class="rr-m" data-src="Balance General 2025 · Nota 7 — Cuentas por cobrar Sucursal Perú">Cartera en riesgo: $6,66B</span><span class="rr-m" data-src="Balance General 2025 · Nota 10 — Impuesto diferido activo Suc. Perú">Diferido reversible: $2,828M</span><span class="rr-m" data-src="E. Resultados 2025 · Pérdida operativa acumulada Sucursal Perú en el ejercicio">Pérdida op. 2025: $710M</span></div>
+    </div><div class="rr-impact">Impacto:<br>Hasta −$4B<br>patrimonio</div></div>
+    <div class="rr-item high"><div class="rr-rank">3</div><div class="rr-body">
+      <div class="rr-header"><div class="rr-ttl" data-tip="Fuente: Balance 2025 · Prueba ácida: (AC $27.372M − Inv $4.152M) / Pas Cte $23.158M = 1,00x · KTN $4.214M (↓19,8%) · Sin líneas de crédito rotativas (Nota 17) · Simulación: 30 días de retraso en cobros → impacta ~$1.000M, equivalente al 86% del FCF anual.">La liquidez tiene poca holgura — un retraso en cobros impacta directamente la caja</div><span class="rr-chip">Alto · Monitoreo trimestral</span></div>
+      <div class="rr-cause">Prueba ácida de 1,00x y KTN de $4.214M (−19,8%) señalan margen mínimo. En el modelo EPC, sin líneas de crédito rotativas, un retraso de 30 días en cobros de cartera ($10.986M) impacta ~$1.000M en caja libre — equivalente al 86% del FCF anual.</div>
+      <div class="rr-metric"><span class="rr-m" data-src="Balance General 2025 · (AC − Inv) / Pasivo Cte = (27.372 − 4.152) / 23.158">Prueba ácida: 1,00x</span><span class="rr-m" data-src="Balance General 2025 · AC $27.372M − Pas. Cte $23.158M = $4.214M (2024: $5.252M)">KTN: $4.214M (↓19,8%)</span><span class="rr-m" data-src="Nota 17 EEFF 2025 — No se registran líneas de crédito rotativas ni cupos bancarios disponibles">Sin líneas bancarias rotativas</span></div>
+    </div><div class="rr-impact">Impacto:<br>~$1.000M por<br>30 días retraso</div></div>
+    <div class="rr-item med"><div class="rr-rank">4</div><div class="rr-body">
+      <div class="rr-header"><div class="rr-ttl" data-tip="Fuente: E. Resultados Nota 5 (PTAR $5.945M, cayó -27,1%) + Balance Nota 14 (Acreedores IC $7.957M, subió +125%) · Exposición cambiaria EUR/COP estimada en €4M equivalente · Sin coberturas cambiarias informadas en Notas 2025.">Dependencia de pocos clientes (PTAR) y de proveedores del mismo grupo (IC)</div><span class="rr-chip">Moderado · Riesgo estratégico</span></div>
+      <div class="rr-cause">PTAR cayó -27,1% y ya es solo 15,2% de ingresos (vs 27,8% en 2024). Simultáneamente, 31,9% del pasivo son cuentas por pagar a IC — si el grupo cambia condiciones de pago, el impacto en costos y plazos sería significativo. Riesgo de exposición EUR/COP no cubierta.</div>
+      <div class="rr-metric"><span class="rr-m" data-src="E. Resultados 2025 · Nota 5 — Ingresos Maquinaria PTAR (2024: $8.154M)">PTAR 2025: $5.945M (↓27,1%)</span><span class="rr-m" data-src="Balance General 2025 · Nota 14 — Cuentas por pagar partes relacionadas IC">Acreedores IC: $7.957M (+125%)</span></div>
+    </div><div class="rr-impact">Impacto:<br>$2–5B si se<br>materializa</div></div>
+  </div>
+
+  
+  <div class="sec-div" style="--c:var(--purple)" data-tip="Gráfico radar y bullet chart para visualizar el desempeño de ANDRITZ en múltiples dimensiones simultáneamente. El radar usa escala 0-100 normalizada contra benchmarks sectoriales EPC.">Visualización Multidimensional</div>
+  <div class="grid g2" style="margin-bottom:12px">
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Radar de Posición Financiera<span class="src-badge" data-src="Escala 0-100 normalizada propia · Cada dimensión calibrada contra benchmark sectorial EPC · Fuente datos: indicadores calculados sobre EEFF 2024-2025"><span class="src-icon">🔢</span> Normalización propia · Benchmarks</span> 2024 vs 2025</div><div class="panel-sub">Escala normalizada 0–100</div></div>
+      <div class="leg"><span class="leg-item"><span class="leg-dot" style="background:#c9d4e8"></span>2024</span><span class="leg-item"><span class="leg-dot" style="background:#00b4d8"></span>2025</span></div>
+      <div class="chart-wrap" style="height:270px"><canvas id="radarChart" data-tip="Gráfico de radar o araña: muestra la posición financiera en 6 dimensiones simultáneamente. La escala 0-100 es relativa al benchmark sectorial EPC. Área más grande = mejor desempeño multidimensional." style="cursor:help"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hd"><div class="panel-title">Tendencias Clave 2024 → 2025<span class="src-badge" data-src="Comparativo basado en todos los estados financieros 2024-2025 · Variación % = (Valor 2025 − Valor 2024) / Valor 2024 × 100 · Fuente: GBP Audit S.A.S."><span class="src-icon">📊</span> EEFF comparativos 2024-2025</span></div><div class="panel-sub">Bullet chart — gris = 2024, color = 2025, % = variación</div></div>
+      <div class="bullet-wrap" id="trendBars"></div>
+    </div>
+  </div>
+
+  
+  <div class="sec-div" style="--c:var(--amber)" data-tip="Proyección cualitativa basada en tendencias de los EEFF 2024-2025. No son estados financieros proyectados ni auditados. Las metas cuantitativas se derivan del análisis de indicadores actuales y benchmarks sectoriales.">Perspectiva Prospectiva</div>
+  <div class="prosp">
+    <div class="prosp-card sh"><div class="prosp-hz">Corto Plazo — 2026</div><div class="prosp-ttl" data-tip="Horizonte 12 meses · Todas las acciones son internas y controlables · Impacto directo en margen operativo (+0,44 pp recuperables) y en gestión del riesgo Perú · Fuente: diagnóstico EEFF 2025">Qué hacer ya (2026)</div>
+      <div class="prosp-item" data-tip="Acción: diseñar presupuesto por partida para viáticos, servicios externos y gastos de oficina, con meta mensual. Justificación: estos gastos crecieron +77,6% en 2025 vs ingresos +33,9%, comprimiendo el margen operativo de 2,80% a 2,36%."><span class="prosp-arr">→</span>Control mensual gastos op. con KPIs por partida</div>
+      <div class="prosp-item" data-tip="Acción: asignar equipo dedicado a gestión de cartera Perú. Riesgo: en contexto de cierre de sucursal, la recuperación se complica progresivamente. Impacto: $6,66B equivalen al 60% del FCF de los próximos 5 años."><span class="prosp-arr">→</span>Gestionar cobros Perú $6,66B antes del cierre formal</div>
+      <div class="prosp-item" data-tip="Acción: interponer recursos o llegar a acuerdo de pago con la DIAN. Sanción total: $165,7M, pagado parcialmente $26,1M. Saldo: $139,6M pendiente. Fuente: Notas EEFF 2025."><span class="prosp-arr">→</span>Regularizar proceso DIAN — negociar saldo $139,6M</div>
+      <div class="prosp-item" data-tip="Acción: participar activamente en licitaciones de plantas de tratamiento de aguas residuales. PTAR cayó -27,1% en 2025 y ya es solo el 15,2% de los ingresos vs 27,8% en 2024. Sin nuevos contratos, el backlog futuro de servicios CH se reduce."><span class="prosp-arr">→</span>Reactivar pipeline PTAR: mínimo 1 contrato adjudicado</div>
+    </div>
+    <div class="prosp-card md"><div class="prosp-hz">Mediano Plazo — 2026-2027</div><div class="prosp-ttl" data-tip="Horizonte 24 meses · Período de cierre Suc. Perú + recuperación de margen operativo · Meta: margen operativo ≥ 3,0% (benchmark mínimo EPC) y D/E ≤ 3,3x · Fuente: tendencias EEFF 2024-2025">Objetivos del mediano plazo (2026-2027)</div>
+      <div class="prosp-item" data-tip="Meta: margen operativo 3,0% mínimo (benchmark sector ingeniería EPC según Damodaran NYU). Para lograrlo: reducir otros gastos operativos del 14,1% al 11% de ingresos, manteniendo el crecimiento actual de ingresos."><span class="prosp-arr">→</span>Recuperar margen operativo ≥ 3,0% (benchmark mínimo)</div>
+      <div class="prosp-item" data-tip="Acción: provisionar en 2026-2027 los costos de cierre operativo, indemnizaciones laborales y posibles pérdidas adicionales. El activo diferido de $2,828M podría deteriorarse si la base gravable de Perú no se recupera antes del cierre formal."><span class="prosp-arr">→</span>Gestionar impacto patrimonial del cierre Perú</div>
+      <div class="prosp-item" data-tip="Acción: identificar alternativas locales y de terceros para los suministros actualmente concentrados en ANDRITZ Italy/Austria ($7,957M en 2025). Objetivo: reducir los acreedores IC del 31,9% al 20% del pasivo total."><span class="prosp-arr">→</span>Diversificar proveedores para reducir dependencia IC</div>
+      <div class="prosp-item" data-tip="Meta: reducir el apalancamiento (Pasivo Total / Patrimonio) de 3,85x a 3,3x. Mecanismo: retener utilidades sin distribuir dividendos, aumentando el patrimonio gradualmente. Cada año de utilidades retenidas de ~$300M aporta 0,10x de reducción en D/E."><span class="prosp-arr">→</span>Reducir D/E financiero hacia 3,3x</div>
+    </div>
+    <div class="prosp-card lg"><div class="prosp-hz">Largo Plazo — 2028+</div><div class="prosp-ttl" data-tip="Horizonte 3+ años · ROE objetivo ≥ 8% requiere margen neto ~1,2% + rotación activos ~1,3x · Independencia financiera ≥ 30% requiere retener ~$3B adicionales en patrimonio · Fuente: análisis DuPont + benchmarks sector">Hacia dónde debe apuntar la empresa (2028+)</div>
+      <div class="prosp-item" data-tip="Meta: ROE ≥ 8% equivale al costo estimado del capital propio (equity). Actualmente: 4,81%. Para llegar al 8% se requiere margen neto ~1,2% (vs 0,80% actual) o mayor rotación de activos. Palanca principal: margen operativo."><span class="prosp-arr">→</span>ROE objetivo ≥ 8% (superar costo de capital equity)</div>
+      <div class="prosp-item" data-tip="Meta: que los propietarios financien al menos el 30% de los activos (hoy: 20,6%). Para lograrlo: retener ~$3.000M adicionales en patrimonio vía utilidades acumuladas, sin distribuir dividendos por 3-4 años."><span class="prosp-arr">→</span>Independencia financiera ≥ 30% (hoy: 20,6%)</div>
+      <div class="prosp-item" data-tip="Condición: solo distribuir dividendos cuando el margen operativo supere el 3,5%, la razón corriente sea ≥ 1,30x y el D/E sea ≤ 3,0x. Utilidades acumuladas actuales: $4.252M — disponibles pero condicionadas a la estabilidad financiera."><span class="prosp-arr">→</span>Primer reparto de dividendos sostenible ($4,25B acum.)</div>
+      <div class="prosp-item" data-tip="Oportunidad: contratos de monitoreo predictivo remoto de centrales hidroeléctricas tienen márgenes superiores a los servicios físicos. Requiere inversión en tecnología IoT y sistemas SCADA. No materializado en 2025."><span class="prosp-arr">→</span>Digitalización O&amp;M para mayor margen y recurrencia</div>
+    </div>
+  </div>
+
+  <div class="sec-div" style="--c:var(--red)" data-tip="Cada recomendación está respaldada por evidencia cuantitativa de los estados financieros 2025. Priorizadas por: (1) impacto en resultado, (2) urgencia temporal, (3) controlabilidad interna. Pase el cursor sobre cada título para ver la evidencia.">Recomendaciones Accionables</div>
+  <div class="recom-grid">
+    <div class="recom"><div class="recom-n">01</div><div>
+      <div class="recom-ttl" data-tip="Basado en: Estado de Resultados 2025 · Otros gastos $5.526M vs $3.111M en 2024 · Meta: reducir de 14,1% a 11% de los ingresos. Esto equivale a recuperar ~$1.200M de resultado operativo potencial en 2026.">Controlar los gastos que crecen el doble que los ingresos</div>
+      <div class="recom-txt">Gastos operativos crecieron 77,6% vs ingresos 33,9%. Implementar presupuesto por partida con revisión mensual. Auditar viáticos (+$836M), servicios externos. Meta: reducir al 11% de ingresos en 2026 (vs 14,1% actual).</div>
+      <span class="recom-badge rb-red">Urgente — hacer en 2026</span>
+    </div></div>
+    <div class="recom"><div class="recom-n">02</div><div>
+      <div class="recom-ttl" data-tip="Basado en: Balance General 2025 · Nota 7 Cartera Perú + Nota 10 Diferido $2,828M · Cierre programado: 2026-2027. Cuanto más tarde se gestione el cobro, mayor el riesgo de no recuperar el total.">Recuperar los $6,66B en cartera antes del cierre de Perú</div>
+      <div class="recom-txt">Provisionar impactos patrimoniales 2026-2027. Gestionar activamente cobro de $6,66B antes del cierre formal. Monitorear conversión del impuesto diferido ($2,828M) — riesgo de deterioro si no se materializa.</div>
+      <span class="recom-badge rb-red">Urgente — gestionar 2026-2027</span>
+    </div></div>
+    <div class="recom"><div class="recom-n">03</div><div>
+      <div class="recom-ttl" data-tip="Basado en: Balance 2025 · Nota 14 · Acreedores IC pasaron de $3.534M a $7.957M (+125%) en un año. Si el grupo cambia sus condiciones comerciales, la empresa queda expuesta. Meta: reducir IC del 31,9% al 20% del pasivo.">Diversificar proveedores para no depender del grupo propio</div>
+      <div class="recom-txt">Acreedores IC pasaron de 16,4% a 31,9% del pasivo. Diversificar proveedores y evaluar alternativas locales para reducir exposición EUR/COP. Implementar coberturas cambiarias para compras IC &gt;$1B.</div>
+      <span class="recom-badge rb-amber">Prioritario — mediano plazo</span>
+    </div></div>
+    <div class="recom"><div class="recom-n">04</div><div>
+      <div class="recom-ttl" data-tip="Basado en indicadores 2025 · D/E 3,85x (meta: 3,5x) · Razón corriente 1,18x (meta: 1,20x) · Prueba ácida 1,00x (meta: 1,10x) · Utilidades retenidas disponibles: $4.252M para fortalecer el patrimonio.">Vigilar mensualmente la deuda y la liquidez con metas claras</div>
+      <div class="recom-txt">Covenant interno D/E &lt; 3,5x con reporte mensual. Mantener razón corriente &gt; 1,20x. Evaluar distribución parcial de utilidades retenidas $4,25B. Seguimiento trimestral prueba ácida (objetivo: 1,10x).</div>
+      <span class="recom-badge rb-green">Estratégico — largo plazo</span>
+    </div></div>
+  </div>
+</div>
+
+
+<div style="background:#1b2a4a;color:#8fa8c8;padding:14px 20px;margin-top:8px;font-size:11px;line-height:1.7">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1200px">
+    <div>
+      <div style="font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#00b4d8;margin-bottom:6px">📄 Estados Financieros Fuente</div>
+      <div>· Estado de Situación Financiera (Balance General) 2024-2025</div>
+      <div>· Estado de Resultados del Período 2024-2025</div>
+      <div>· Estado de Cambios en el Patrimonio 2024-2025</div>
+      <div>· Estado de Flujos de Efectivo 2024-2025</div>
+      <div>· Notas a los Estados Financieros (Notas 1-20)</div>
+    </div>
+    <div>
+      <div style="font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#00b4d8;margin-bottom:6px">🔍 Auditoría y Certificación</div>
+      <div>· Auditora: GBP Audit S.A.S.</div>
+      <div>· Opinión: Sin salvedades (dictamen limpio)</div>
+      <div>· Estándar: NIIF Plenas (IFRS Full)</div>
+      <div>· NIT empresa: 830.092.234-1</div>
+      <div>· Período: 1 enero – 31 diciembre 2025</div>
+    </div>
+    <div>
+      <div style="font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#00b4d8;margin-bottom:6px">📚 Referencias Académicas</div>
+      <div>· Ortiz Anaya, H. — Análisis Financiero Aplicado, bajo NIIF (16ª ed.) — U. Externado de Colombia</div>
+      <div>· Van Horne & Wachowicz — Fundamentals of Financial Management (13ª ed.) — Pearson</div>
+      <div>· CFA Institute — CFA Program Curriculum: Financial Statement Analysis</div>
+      <div>· Damodaran, A. — Industry Data, NYU Stern (actualización anual, pages.stern.nyu.edu)</div>
+      <div>· AICPA & CIMA — Global Management Accounting Principles, GMAP (2ª ed., 2023)</div>
+    </div>
+    <div>
+      <div style="font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#00b4d8;margin-bottom:6px">🔢 Metodología de Cálculo</div>
+      <div>· Indicadores: fórmulas estándar NIIF / CFA Program Curriculum</div>
+      <div>· Análisis vertical: % sobre ingresos del período</div>
+      <div>· Análisis horizontal: variación absoluta y relativa</div>
+      <div>· Benchmarks sectoriales: Damodaran NYU · IBISWorld Engineering Services</div>
+      <div>· Cifras en millones COP (MCOP) salvo indicación</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+
+const D = {
+  // P&L
+  ingresos24:29278, ingresos25:39206,
+  costos24:20247,   costos25:25797,
+  ubruta24:9031,    ubruta25:13409,
+  otrosIng24:2309,  otrosIng25:2575,
+  gPersonal24:6911, gPersonal25:8868,
+  dya24:500,        dya25:666,
+  otrosG24:3111,    otrosG25:5526,
+  uaii24:819,       uaii25:925,
+  rfin24:492,       rfin25:-290,
+  imp24:-1110,      imp25:-323,
+  uNeta24:201,      uNeta25:312,
+  // Balance
+  actCte24:25291,   actCte25:27372,
+  actNoCte24:2485,  actNoCte25:4049,
+  actTotal24:27776, actTotal25:31421,
+  pasCte24:20039,   pasCte25:23158,
+  pasNoCte24:1565,  pasNoCte25:1780,
+  pasTotal24:21605, pasTotal25:24938,
+  patrimonio24:6171,patrimonio25:6483,
+  // Activos corrientes
+  caja24:8173,   caja25:9313,
+  cartera24:10826,cartera25:10986,
+  inv24:2567,    inv25:4152,
+  impCte24:3646, impCte25:2658,
+  otrosCte24:78, otrosCte25:263,
+  // Pasivos corrientes
+  acreedIC24:3534, acreedIC25:7957,
+  provGar24:13612, provGar25:12995,
+  benfEmp24:821,   benfEmp25:670,
+  impCteP24:1022,  impCteP25:541,
+  // Patrimonio
+  capital:696, reservas:1223,
+  resAcum24:4008, resAcum25:4252,
+  resEj24:244, resEj25:312,
+  // Flujos
+  fOpBruto24:3906, fOpBruto25:2815,
+  fOpNeto24:2792,  fOpNeto25:1741,
+  impPag24:-1114,  impPag25:-1073,
+  fInv24:-338,     fInv25:-583,
+  fFin24:-330,     fFin25:-18,
+  varCaja24:2124,  varCaja25:1140,
+  // Segmentos
+  servCH24:11617, servCH25:19058,
+  repCH24:9008,   repCH25:13740,
+  ptar24:8154,    ptar25:5945,
+  coms24:498,     coms25:464,
+  // Margenes
+  mgBruto24:30.8, mgBruto25:34.2,
+  mgEbitda24:4.51,mgEbitda25:4.06,
+  mgOp24:2.80,    mgOp25:2.36,
+  mgNeto24:0.69,  mgNeto25:0.80,
+  roa24:0.72,     roa25:0.99,
+  roe24:3.26,     roe25:4.81,
+  // Liquidez ratios
+  rc24:1.26, rc25:1.18,
+  pa24:1.13, pa25:1.00,
+  li24:0.41, li25:0.40,
+  solv24:1.29,solv25:1.26,
+  li2g24:0.95,li2g25:0.88,
+  // FCF
+  capex24:338, capex25:583,
+  fcf24:2454,  fcf25:1158
+};
+
+
+const pct = (a,b) => +((b-a)/a*100).toFixed(1);
+
+function trafficLight(val, cfg) {
+  
+  if (cfg.dir === 'up') {
+    if (val >= cfg.ok) return 'ok';
+    if (val >= cfg.warn) return 'warn';
+    return 'alert';
+  } else {
+    if (val <= cfg.ok) return 'ok';
+    if (val <= cfg.warn) return 'warn';
+    return 'alert';
+  }
+}
+
+function kpiCard({lbl, val, prev, chip, chipClass, c, tl, tooltip='', valSize=''}) {
+  const tlClass = tl ? `tl-${tl}` : '';
+  
+  const tipAttr = tooltip ? ` data-tip="${tooltip.replace(/"/g,"'")}"` : '';
+  return `<div class="kpi-card ${tlClass}"${tipAttr} style="--kc:${c||'var(--teal)'}">
+    <span class="kpi-tl"></span>
+    <div class="kc-lbl">${lbl}</div>
+    <div class="kc-val ${valSize}">${val}</div>
+    <div class="kc-meta">
+      ${chip ? `<span class="chip ${chipClass||'neu'}">${chip}</span>` : ''}
+      ${prev ? `<span class="kc-prev">${prev}</span>` : ''}
+    </div>
+  </div>`;
+}
+
+function buildKPIStrips() {
+  // Resumen
+  document.getElementById('kpiStrip').innerHTML = [
+    kpiCard({lbl:'Ingresos Operacionales', val:'$39.206M', prev:'2024: $29.278M',
+      chip:`▲ ${pct(D.ingresos24,D.ingresos25)}%`, chipClass:'up', c:'var(--teal)',
+      tl: trafficLight(pct(D.ingresos24,D.ingresos25), {dir:'up',ok:20,warn:5}),
+      tooltip:'Crecimiento de ingresos 2024→2025. Benchmark sector EPC: 5-15% anual.'}),
+    kpiCard({lbl:'Margen Bruto', val:'34,2%', prev:'2024: 30,8%',
+      chip:'▲ +3,4 pp', chipClass:'up', c:'var(--green)',
+      tl: trafficLight(34.2, {dir:'up',ok:30,warn:25}),
+      tooltip:'Margen bruto sobre ingresos. Rango sector EPC: 25%-40%.'}),
+    kpiCard({lbl:'Margen Operativo', val:'2,36%', prev:'2024: 2,80%',
+      chip:'▼ −0,44 pp', chipClass:'dn', c:'var(--amber)',
+      tl: trafficLight(2.36, {dir:'up',ok:3.0,warn:2.0}),
+      tooltip:'Margen operativo (UAII/Ventas). Benchmark mínimo sector EPC: 3,0%.'}),
+    kpiCard({lbl:'Resultado Neto', val:'$312M', prev:'Margen: 0,80%',
+      chip:'▲ 55,2%', chipClass:'up', c:'var(--purple)',
+      tl: trafficLight(0.80, {dir:'up',ok:0.7,warn:0.3}),
+      tooltip:'Utilidad neta 2025. Incluye efecto diferido Perú no recurrente.'}),
+    kpiCard({lbl:'Caja + FCF', val:'$9.313M', prev:'FCF: $1.158M',
+      chip:'▲ 13,9%', chipClass:'up', c:'var(--blue)',
+      tl: trafficLight(9313, {dir:'up',ok:8000,warn:4000}),
+      tooltip:'Efectivo disponible (histórico máximo). FCF = Flujo operativo − CAPEX.'}),
+    kpiCard({lbl:'Deuda Real (sin provisiones)', val:'34,5%', prev:'Aparente: 79,4%',
+      chip:'Excl. provisiones', chipClass:'neu', c:'var(--red)',
+      tl:'info',
+      tooltip:'Endeudamiento sin provisiones de garantía ($14.136M). El 79,4% aparente incluye pasivo operativo no financiero.'})
+  ].join('');
+
+  // Activo
+  document.getElementById('kpiStripActivo').innerHTML = [
+    kpiCard({lbl:'Activos Corrientes', val:'$27.372M', prev:'2024: $25.291M',
+      chip:`▲ ${pct(D.actCte24,D.actCte25)}%`, chipClass:'up', c:'var(--teal)',
+      tl:'ok'}),
+    kpiCard({lbl:'Efectivo y Equivalentes', val:'$9.313M', prev:'Máximo histórico',
+      chip:`▲ ${pct(D.caja24,D.caja25)}%`, chipClass:'up', c:'var(--green)', tl:'ok'}),
+    kpiCard({lbl:'Inventarios', val:'$4.152M', prev:'2024: $2.567M',
+      chip:`▲ ${pct(D.inv24,D.inv25)}%`, chipClass:'dn', c:'var(--amber)',
+      tl:'warn', tooltip:'Crecimiento +61,7% presiona la prueba ácida hacia 1,00x.'}),
+    kpiCard({lbl:'Activo No Corriente', val:'$4.049M', prev:'Incl. diferido Perú',
+      chip:`▲ ${pct(D.actNoCte24,D.actNoCte25)}%`, chipClass:'up', c:'var(--purple)',
+      tl:'warn', tooltip:'69,8% es impuesto diferido Suc. Perú — componente temporal no recurrente.'})
+  ].join('');
+
+  // Pasivo
+  document.getElementById('kpiStripPasivo').innerHTML = [
+    kpiCard({lbl:'Total Pasivos', val:'$24.938M', prev:'2024: $21.605M',
+      chip:`▲ ${pct(D.pasTotal24,D.pasTotal25)}%`, chipClass:'dn', c:'var(--red)', tl:'warn',
+      tooltip:'79,4% del activo. Sin provisiones de garantía: 34,5%.'}),
+    kpiCard({lbl:'Acreedores Comerciales', val:'$7.957M', prev:'2024: $3.534M',
+      chip:`▲ ${pct(D.acreedIC24,D.acreedIC25)}%`, chipClass:'dn', c:'var(--amber)',
+      tl:'alert', tooltip:'IC Italy, Austria, Suiza. +125,2% — concentración creciente en grupo.'}),
+    kpiCard({lbl:'Patrimonio Total', val:'$6.483M', prev:'2024: $6.171M',
+      chip:`▲ ${pct(D.patrimonio24,D.patrimonio25)}%`, chipClass:'up', c:'var(--green)', tl:'ok'}),
+    kpiCard({lbl:'Deuda Financiera', val:'$289M', prev:'Solo NIIF 16',
+      chip:'Sin créditos bancarios', chipClass:'neu', c:'var(--blue)', tl:'ok',
+      tooltip:'La deuda financiera real es 1,2% del pasivo total. Fortaleza estructural.'})
+  ].join('');
+
+  // Resultados
+  document.getElementById('kpiStripRes').innerHTML = [
+    kpiCard({lbl:'Margen Bruto', val:'34,2%', prev:'2024: 30,8%',
+      chip:'▲ +3,4 pp', chipClass:'up', c:'var(--green)',
+      tl: trafficLight(34.2, {dir:'up',ok:30,warn:25})}),
+    kpiCard({lbl:'Margen Operativo', val:'2,36%', prev:'Benchmark: 3,0%',
+      chip:'▼ −0,44 pp', chipClass:'dn', c:'var(--amber)',
+      tl: trafficLight(2.36, {dir:'up',ok:3.0,warn:2.0}),
+      tooltip:'Por debajo del benchmark sectorial mínimo (3,0%). Principal alerta del período.'}),
+    kpiCard({lbl:'Margen Neto', val:'0,80%', prev:'2024: 0,69%',
+      chip:'▲ +0,11 pp', chipClass:'up', c:'var(--teal)',
+      tl: trafficLight(0.80, {dir:'up',ok:0.7,warn:0.4})}),
+    kpiCard({lbl:'EBITDA', val:'$1.591M', prev:'Margen: 4,06%',
+      chip:'▲ +$274M abs.', chipClass:'up', c:'var(--purple)',
+      tl: trafficLight(4.06, {dir:'up',ok:4.0,warn:3.0})})
+  ].join('');
+
+  // Flujos
+  document.getElementById('kpiStripFlujos').innerHTML = [
+    kpiCard({lbl:'Flujo Operativo Neto', val:'$1.741M', prev:'2024: $2.792M',
+      chip:'▼ −37,7%', chipClass:'dn', c:'var(--green)',
+      tl: trafficLight(1741, {dir:'up',ok:2000,warn:1000}),
+      tooltip:'Caída explicada 107% por efecto diferido Perú — no refleja deterioro del negocio.'}),
+    kpiCard({lbl:'CAPEX', val:'$583M', prev:'2024: $338M',
+      chip:'▲ +72,5%', chipClass:'dn', c:'var(--amber)',
+      tl:'info', tooltip:'CAPEX en crecimiento alineado con expansión de proyectos.'}),
+    kpiCard({lbl:'Free Cash Flow', val:'$1.158M', prev:'2024: $2.454M',
+      chip:'▼ −52,8%', chipClass:'dn', c:'var(--blue)',
+      tl: trafficLight(1158, {dir:'up',ok:2000,warn:800})}),
+    kpiCard({lbl:'Caja Final', val:'$9.313M', prev:'Inicio: $8.173M',
+      chip:'▲ +$1.140M', chipClass:'up', c:'var(--teal)', tl:'ok'})
+  ].join('');
+
+  // Endeudamiento
+  document.getElementById('kpiStripEnd').innerHTML = [
+    kpiCard({lbl:'Endeudamiento Total', val:'79,4%', prev:'Real: 34,5%',
+      chip:'▲ +1,6 pp', chipClass:'dn', c:'var(--red)', tl:'alert',
+      valSize:'md', tooltip:'Aparente alto por provisiones de garantía (56,7%). Real excluyendo provisiones: 34,5%.'}),
+    kpiCard({lbl:'Independencia Financiera', val:'20,6%', prev:'Óptimo: >40%',
+      chip:'▼ −1,6 pp', chipClass:'dn', c:'var(--amber)', tl:'alert', valSize:'md'}),
+    kpiCard({lbl:'Laverage (Pasivo/Pat.)', val:'3,85x', prev:'2024: 3,50x',
+      chip:'▲ +0,35x', chipClass:'dn', c:'var(--purple)', tl:'warn', valSize:'md'}),
+    kpiCard({lbl:'Deuda CP / Pasivo', val:'92,9%', prev:'Principalmente provisiones',
+      chip:'≈ Estable', chipClass:'neu', c:'var(--navy)', tl:'warn', valSize:'md'}),
+    kpiCard({lbl:'Oblig. Financieras', val:'1,2%', prev:'Sin créditos bancarios',
+      chip:'Sin deuda bancaria', chipClass:'up', c:'var(--green)', tl:'ok', valSize:'md',
+      tooltip:'Prácticamente cero deuda financiera. Fortaleza estructural excepcional.'})
+  ].join('');
+
+  // Liquidez
+  document.getElementById('kpiStripLiq').innerHTML = [
+    kpiCard({lbl:'Razón Corriente', val:'1,18x', prev:'Sector: 1,10-1,40x',
+      chip:'▼ −0,08x', chipClass:'dn', c:'var(--teal)',
+      tl: trafficLight(1.18, {dir:'up',ok:1.2,warn:1.1}), valSize:'md',
+      tooltip:'Dentro del rango sectorial pero en tercio inferior.'}),
+    kpiCard({lbl:'Prueba Ácida', val:'1,00x', prev:'Sector: 0,90-1,20x',
+      chip:'▼ −0,13x', chipClass:'dn', c:'var(--green)',
+      tl: trafficLight(1.00, {dir:'up',ok:1.1,warn:0.9}), valSize:'md',
+      tooltip:'Exactamente en el límite mínimo aceptable del rango sectorial.'}),
+    kpiCard({lbl:'Liquidez Inmediata', val:'0,40x', prev:'2024: 0,41x',
+      chip:'≈ Estable', chipClass:'neu', c:'var(--blue)',
+      tl: trafficLight(0.40, {dir:'up',ok:0.3,warn:0.2}), valSize:'md'}),
+    kpiCard({lbl:'KTN / Pasivo Cte.', val:'0,18x', prev:'Óptimo: 0,50-1,00x',
+      chip:'▼ −0,08x', chipClass:'dn', c:'var(--amber)',
+      tl: trafficLight(0.18, {dir:'up',ok:0.5,warn:0.25}), valSize:'md',
+      tooltip:'Por debajo del rango óptimo. Tendencia decreciente preocupante.'}),
+    kpiCard({lbl:'Productividad KTNO', val:'18,3%', prev:'2024: 33,7%',
+      chip:'▲ Mejora eficiencia', chipClass:'up', c:'var(--purple)',
+      tl:'ok', valSize:'md', tooltip:'Menos recursos propios por peso vendido — mejora por mayor crédito IC.'})
+  ].join('');
+
+  // Rentabilidad
+  document.getElementById('kpiStripRent').innerHTML = [
+    kpiCard({lbl:'Margen Bruto', val:'34,2%', prev:'2024: 30,8%',
+      chip:'▲ +3,4 pp', chipClass:'up', c:'var(--green)',
+      tl: trafficLight(34.2, {dir:'up',ok:30,warn:25}), valSize:'md'}),
+    kpiCard({lbl:'Margen Operativo', val:'2,36%', prev:'Benchmark: 3,0%',
+      chip:'▼ −0,44 pp', chipClass:'dn', c:'var(--amber)',
+      tl: trafficLight(2.36, {dir:'up',ok:3.0,warn:2.0}), valSize:'md',
+      tooltip:'Por debajo del benchmark sectorial. Prioridad #1 para 2026.'}),
+    kpiCard({lbl:'ROE', val:'4,81%', prev:'2024: 3,26%',
+      chip:'▲ +1,55 pp', chipClass:'up', c:'var(--purple)',
+      tl: trafficLight(4.81, {dir:'up',ok:6,warn:3}), valSize:'md',
+      tooltip:'Rentabilidad del patrimonio. Meta LP: superar 8% (costo de capital equity).'}),
+    kpiCard({lbl:'ROA', val:'0,99%', prev:'2024: 0,72%',
+      chip:'▲ +0,27 pp', chipClass:'up', c:'var(--red)',
+      tl: trafficLight(0.99, {dir:'up',ok:1.0,warn:0.5}), valSize:'md'})
+  ].join('');
+}
+
+function showPage(id) {
+  
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.style.opacity = '0';
+    p.style.display = 'none';
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  
+  const target = document.getElementById('page-' + id);
+  target.style.display = 'block';
+  target.classList.add('active');
+  
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { target.style.opacity = '1'; });
+  });
+  event.currentTarget.classList.add('active');
+
+  
+  const tip = document.getElementById('kpiTooltip');
+  if (tip) tip.classList.remove('show');
+}
+
+const C = {
+  DARK:'#1b2a4a', TEAL:'#00b4d8', GREEN:'#21c97a', AMBER:'#f59e0b',
+  RED:'#ef4444', PURPLE:'#8b5cf6', BLUE:'#3b82f6', GRAY:'#c9d4e8'
+};
+
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.animation.duration = 600;
+Chart.defaults.animation.easing = 'easeOutQuart';
+
+const mcop = v => '$'+(v<0?'-':'')+ Math.abs(v).toLocaleString()+'M';
+const pctFmt = v => v+'%';
+
+function axBar(pct=false, mcop_=false, neg=false) {
+  return {
+    x:{ grid:{display:false}, ticks:{font:{size:10},color:'#888'} },
+    y:{ grid:{color:'#f0f2f5'}, ticks:{font:{size:10},color:'#888',
+      callback: v => pct ? v+'%' : mcop_ ? mcop(v) : v
+    }}
+  };
+}
+
+(function buildRealWaterfall() {
+  const labels = ['Ingresos','− Costos','Ut. Bruta','+ Otros Ing.','− G. Personal','− D&A','− Otros G.','UAII','± Financiero','± Impuesto','Res. Neto'];
+  const vals   = [39206, -25797, 13409, 2575, -8868, -666, -5526, 925, -290, -323, 312];
+  const isTotal = [false,false,true,false,false,false,false,true,false,false,true];
+  const colors  = [C.GREEN,C.RED,C.TEAL,C.GREEN,C.RED,C.RED,C.RED,C.TEAL,C.RED,C.RED,C.GREEN];
+
+  
+  let cum = 0;
+  const base = []; const bar = [];
+  vals.forEach((v, i) => {
+    if (isTotal[i]) {
+      base.push(0);
+      bar.push(Math.abs(v));
+      cum = v > 0 ? v : 0;
+    } else {
+      if (v >= 0) { base.push(cum); bar.push(v); cum += v; }
+      else        { base.push(cum + v); bar.push(Math.abs(v)); cum += v; }
+    }
+  });
+
+  new Chart(document.getElementById('waterfallChart'), {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        { data:base, backgroundColor:'transparent', borderWidth:0, barPercentage:.55, categoryPercentage:.85 },
+        { data:bar,  backgroundColor:colors, borderRadius:3, barPercentage:.55, categoryPercentage:.85 }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => {
+        if(ctx.datasetIndex===0) return null;
+        const v = vals[ctx.dataIndex];
+        return ' '+(v<0?'−':'')+'$'+Math.abs(v).toLocaleString()+'M'+(isTotal[ctx.dataIndex]?' ← Total':'');
+      }}}},
+      scales:{
+        x:{ stacked:true, grid:{display:false}, ticks:{font:{size:9.5},color:'#888'} },
+        y:{ stacked:true, grid:{color:'#f0f2f5'}, ticks:{font:{size:10},color:'#888', callback:v=>'$'+v.toLocaleString()+'M'}, min:0 }
+      }
+    }
+  });
+})();
+
+new Chart(document.getElementById('ingresosChart'),{
+  type:'bar',
+  data:{
+    labels:['Servicios CH','Repuestos CH/POC','Maquinaria PTAR','Comisiones Sep.'],
+    datasets:[
+      {label:'2024', data:[D.servCH24,D.repCH24,D.ptar24,D.coms24], backgroundColor:C.GRAY, borderRadius:4},
+      {label:'2025', data:[D.servCH25,D.repCH25,D.ptar25,D.coms25], backgroundColor:C.TEAL, borderRadius:4}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': $'+ctx.parsed.y.toLocaleString()+'M'}}},
+    scales:axBar(false,true)
+  }
+});
+
+new Chart(document.getElementById('margenesChart'),{
+  type:'bar',
+  data:{
+    labels:['Margen Bruto','Margen EBITDA','Margen Operativo','Margen Neto'],
+    datasets:[
+      {label:'2024', data:[D.mgBruto24,D.mgEbitda24,D.mgOp24,D.mgNeto24], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.mgBruto25,D.mgEbitda25,D.mgOp25,D.mgNeto25],
+        backgroundColor:[C.GREEN, C.RED, C.RED, C.GREEN], borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toFixed(2)+'%'}}},
+    scales:axBar(true)
+  }
+});
+
+new Chart(document.getElementById('balanceChart'),{
+  type:'bar',
+  data:{
+    labels:['Pas. Corriente','Pas. LP','Patrimonio'],
+    datasets:[
+      {label:'2024 (%AT)', data:[72.1,5.6,22.2], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025 (%AT)', data:[73.7,5.7,20.6], backgroundColor:[C.RED,C.TEAL,C.GREEN], borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:10},color:'#888'}},
+      y:{grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>v+'%'},max:80}
+    }
+  }
+});
+
+new Chart(document.getElementById('activoCorrChart'),{
+  type:'bar',
+  data:{
+    labels:['Efectivo','Ctas. x Cobrar','Inventarios','Imp. Corr.','Otros'],
+    datasets:[
+      {label:'2024', data:[D.caja24,D.cartera24,D.inv24,D.impCte24,D.otrosCte24], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.caja25,D.cartera25,D.inv25,D.impCte25,D.otrosCte25], backgroundColor:C.TEAL, borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': $'+ctx.parsed.y.toLocaleString()+'M'}}},
+    scales:axBar(false,true)
+  }
+});
+
+new Chart(document.getElementById('pasivoCorrChart'),{
+  type:'bar',
+  data:{
+    labels:['Acreed. IC','Provisiones','Benef.Empl.','Imp.Cte.','Otros'],
+    datasets:[
+      {label:'2024', data:[D.acreedIC24,D.provGar24,D.benfEmp24,D.impCteP24,1050], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.acreedIC25,D.provGar25,D.benfEmp25,D.impCteP25,995], backgroundColor:C.RED, borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,labels:{font:{size:10},color:'#666',boxWidth:10,usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': $'+ctx.parsed.y.toLocaleString()+'M'}}},
+    scales:axBar(false,true)
+  }
+});
+
+new Chart(document.getElementById('patrimonioChart'),{
+  type:'bar',
+  data:{
+    labels:['2024','2025'],
+    datasets:[
+      {label:'Capital',       data:[D.capital,D.capital],       backgroundColor:C.DARK, borderRadius:0},
+      {label:'Reservas',      data:[D.reservas,D.reservas],     backgroundColor:C.BLUE, borderRadius:0},
+      {label:'Res. Acum.',    data:[D.resAcum24,D.resAcum25],   backgroundColor:C.GREEN, borderRadius:0},
+      {label:'Res. Ejercicio',data:[D.resEj24,D.resEj25],       backgroundColor:C.AMBER, borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,labels:{font:{size:10},color:'#666',boxWidth:10,usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': $'+ctx.parsed.y.toLocaleString()+'M'}}},
+    scales:{
+      x:{stacked:true,grid:{display:false},ticks:{font:{size:12},color:'#888'}},
+      y:{stacked:true,grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>'$'+v.toLocaleString()+'M'}}
+    }
+  }
+});
+
+new Chart(document.getElementById('segmentosChart'),{
+  type:'bar',
+  data:{
+    labels:['Servicios CH','Repuestos CH/POC','Maquinaria PTAR','Comisiones Sep.'],
+    datasets:[
+      {label:'2024', data:[D.servCH24,D.repCH24,D.ptar24,D.coms24], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.servCH25,D.repCH25,D.ptar25,D.coms25], backgroundColor:C.TEAL, borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,labels:{font:{size:10},color:'#666',boxWidth:10,usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': $'+ctx.parsed.y.toLocaleString()+'M'}}},
+    scales:axBar(false,true)
+  }
+});
+
+new Chart(document.getElementById('flujosChart'),{
+  type:'bar',
+  data:{
+    labels:['Op. Bruto','Imp. Pagados','Op. Neto','Inversión','Financiación','Var. Caja'],
+    datasets:[
+      {label:'2024', data:[D.fOpBruto24,D.impPag24,D.fOpNeto24,D.fInv24,D.fFin24,D.varCaja24], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.fOpBruto25,D.impPag25,D.fOpNeto25,D.fInv25,D.fFin25,D.varCaja25],
+        backgroundColor:[C.GREEN,C.RED,C.GREEN,C.RED,C.RED,C.TEAL], borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>{const v=ctx.parsed.y;return' '+ctx.dataset.label+': '+(v<0?'−':'')+'$'+Math.abs(v).toLocaleString()+'M'}}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:10},color:'#888'}},
+      y:{grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>(v<0?'−':'')+'$'+Math.abs(v).toLocaleString()+'M'}}
+    }
+  }
+});
+
+(function buildCashBridge() {
+  const labels=['Caja Inicial','+ Flujo Op.','− CAPEX','− Financiación','= Caja Final'];
+  const vals=[8173,1741,-583,-18,9313];
+  const isBase=[false,false,false,false,false];
+  const colors=[C.GREEN,C.GREEN,C.RED,C.RED,C.TEAL];
+  // Bridge: cada barra roja (negativa) tiene base = punto_llegada, bar = delta
+  // Así stacked = base + bar = punto_partida (la barra flota entre llegada y partida)
+  const base=[0, 8173, 9331, 9313, 0];
+  const bar =[8173, 1741, 583, 18, 9313];
+  new Chart(document.getElementById('cajaChart'),{
+    type:'bar',
+    data:{labels, datasets:[
+      {data:base, backgroundColor:'transparent', borderWidth:0, barPercentage:.55},
+      {data:bar,  backgroundColor:colors, borderRadius:3, barPercentage:.55}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
+        if(ctx.datasetIndex===0) return null;
+        const v=vals[ctx.dataIndex];
+        return' '+(v<0?'−':'')+'$'+Math.abs(v).toLocaleString()+'M';
+      }}}},
+      scales:{
+        x:{stacked:true,grid:{display:false},ticks:{font:{size:10},color:'#888'}},
+        y:{stacked:true,grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>'$'+v.toLocaleString()+'M'},min:0}
+      }
+    }
+  });
+})();
+
+new Chart(document.getElementById('radarChart'),{
+  type:'radar',
+  data:{
+    labels:['Crecimiento\nIngresos','Margen Bruto','Margen\nOperativo','Liquidez\nCorriente','Cobertura\nCaja','Rentabilidad\nPatrimonio'],
+    datasets:[
+      {label:'2024', data:[40,62,56,72,68,33], backgroundColor:'rgba(201,212,232,.2)', borderColor:C.GRAY, pointBackgroundColor:C.GRAY, pointRadius:4, borderWidth:2},
+      {label:'2025', data:[75,68,47,59,72,48], backgroundColor:'rgba(0,180,216,.15)', borderColor:C.TEAL, pointBackgroundColor:C.TEAL, pointRadius:4, borderWidth:2}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,labels:{font:{size:10},color:'#666',boxWidth:10,usePointStyle:true}}},
+    scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9},color:'#aaa',backdropColor:'transparent'},grid:{color:'#e8ecf2'},pointLabels:{font:{size:10.5},color:'#555'}}}
+  }
+});
+
+const trends=[
+  {lbl:'Ingresos',      v24:D.ingresos24, v25:D.ingresos25, fmt:'$'},
+  {lbl:'Utilidad Bruta',v24:D.ubruta24,   v25:D.ubruta25,   fmt:'$'},
+  {lbl:'G. Operativos', v24:D.otrosG24,   v25:D.otrosG25,   fmt:'$'},
+  {lbl:'Res. Neto',     v24:D.uNeta24,    v25:D.uNeta25,    fmt:'$'},
+  {lbl:'Total Activos', v24:D.actTotal24, v25:D.actTotal25, fmt:'$'},
+  {lbl:'Total Pasivos', v24:D.pasTotal24, v25:D.pasTotal25, fmt:'$'},
+  {lbl:'Efectivo',      v24:D.caja24,     v25:D.caja25,     fmt:'$'},
+  {lbl:'KTN',           v24:5252,         v25:4214,         fmt:'$'}
+];
+const TMAX=Math.max(...trends.flatMap(t=>[t.v24,t.v25]));
+const bw=document.getElementById('trendBars');
+const fmtV=v=>'$'+v.toLocaleString()+'M';
+
+bw.innerHTML=`<div style="display:flex;gap:16px;margin-bottom:10px;font-size:10.5px;align-items:center;flex-wrap:wrap">
+  <span style="display:flex;align-items:center;gap:5px"><span style="display:inline-block;width:28px;height:8px;border-radius:2px;background:#c9d4e8"></span><span style="color:#888">2024</span></span>
+  <span style="display:flex;align-items:center;gap:5px"><span style="display:inline-block;width:28px;height:8px;border-radius:2px;background:#21c97a"></span><span>2025 — creció ▲</span></span>
+  <span style="display:flex;align-items:center;gap:5px"><span style="display:inline-block;width:28px;height:8px;border-radius:2px;background:#ef4444"></span><span>2025 — cayó ▼</span></span>
+  <span style="color:#bbb;font-size:10px">· barras proporcionales al máximo · cifras en MCOP</span>
+</div>`;
+
+trends.forEach((t,i)=>{
+  const p=pct(t.v24,t.v25);
+  const up=p>=0;
+  const c25=up?'#21c97a':'#ef4444';
+  const w24=((t.v24/TMAX)*100).toFixed(1);
+  const w25=((t.v25/TMAX)*100).toFixed(1);
+  bw.innerHTML+=`
+  <div class="tr-group">
+    <div class="tr-row">
+      <div class="tr-lbl yr">2024</div>
+      <div class="tr-track"><div class="tr-bar" style="width:${w24}%;background:#c9d4e8"></div></div>
+      <div class="tr-val" style="color:#999">${fmtV(t.v24)}</div>
+      <div class="tr-pct" style="color:${c25};font-size:12px;font-weight:900">${up?'▲':'▼'} ${Math.abs(p).toFixed(1)}%</div>
+    </div>
+    <div class="tr-row">
+      <div class="tr-lbl" style="font-weight:700;color:#252423">${t.lbl}</div>
+      <div class="tr-track"><div class="tr-bar" style="width:${w25}%;background:${c25}"></div></div>
+      <div class="tr-val" style="color:#252423">${fmtV(t.v25)}</div>
+      <div class="tr-pct"></div>
+    </div>
+  </div>
+  ${i<trends.length-1?'<div class="tr-sep"></div>':''}`;
+});
+
+new Chart(document.getElementById('estruturaChart'),{
+  type:'bar',
+  data:{
+    labels:['Pas. Corriente','Pas. No Corriente','Patrimonio'],
+    datasets:[
+      {label:'2024 (%AT)', data:[72.1,5.6,22.2], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025 (%AT)', data:[73.7,5.7,20.6], backgroundColor:[C.RED,C.TEAL,C.GREEN], borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:10},color:'#888'}},
+      y:{grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>v+'%'},max:80}
+    }
+  }
+});
+
+new Chart(document.getElementById('liquidezChart'),{
+  type:'bar',
+  data:{
+    labels:['Razón\nCorriente','Prueba\nÁcida','Liq. Inm.\n1° grado','Liq. Inm.\n2° grado','Solvencia\nFinanciera'],
+    datasets:[
+      {label:'2024', data:[D.rc24,D.pa24,D.li24,D.li2g24,D.solv24], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.rc25,D.pa25,D.li25,D.li2g25,D.solv25],
+        backgroundColor:[
+          D.rc25>=1.2?C.GREEN:D.rc25>=1.1?C.AMBER:C.RED,
+          D.pa25>=1.0?C.GREEN:D.pa25>=0.9?C.AMBER:C.RED,
+          D.li25>=0.3?C.GREEN:C.AMBER,
+          D.li2g25>=0.9?C.GREEN:C.AMBER,
+          D.solv25>=1.5?C.GREEN:D.solv25>=1.2?C.AMBER:C.RED
+        ], borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toFixed(2)+'x'}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:9.5},color:'#888'}},
+      y:{grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>v+'x'},min:0,max:1.5}
+    }
+  }
+});
+
+(function buildMarginWaterfall() {
+  const items = [
+    { lbl:'Mg. Bruto (punto de partida)', v: 34.20, tipo:'inicio' },
+    { lbl:'− G. Personal',                v:-22.60, tipo:'resta'  },
+    { lbl:'− Otros Gastos',               v:-14.10, tipo:'resta'  },
+    { lbl:'− D&A',                         v: -1.70, tipo:'resta'  },
+    { lbl:'+ Otros Ingresos',             v:  6.60, tipo:'suma'   },
+    { lbl:'UAII (subtotal)',               v:  2.36, tipo:'subtotal'},
+    { lbl:'± Financiero',                 v: -0.74, tipo:'resta'  },
+    { lbl:'± Impuesto',                   v: -0.82, tipo:'resta'  },
+    { lbl:'Mg. Neto (resultado final)',    v:  0.80, tipo:'final'  },
+  ];
+
+  const colorMap = { inicio:'#21c97a', suma:'#21c97a', resta:'#ef4444', subtotal:'#00b4d8', final:'#1b2a4a' };
+  const MAX_ABS = Math.max(...items.map(d=>Math.abs(d.v)));
+  const SCALE = 100 / MAX_ABS; // normaliza a 100%
+
+  const canvas = document.getElementById('rentCascadaChart');
+  
+  const wrap = canvas.parentElement;
+  wrap.style.height = 'auto';
+  wrap.innerHTML = `<div id="cascadaMargenes" style="padding:4px 0;font-family:'Segoe UI',system-ui,sans-serif"></div>`;
+
+  const cont = document.getElementById('cascadaMargenes');
+
+  
+  cont.innerHTML = `<div style="display:flex;gap:14px;margin-bottom:10px;font-size:10px;flex-wrap:wrap;color:#555">
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:2px;background:#21c97a;display:inline-block"></span>Aporta al margen</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:2px;background:#ef4444;display:inline-block"></span>Reduce el margen</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:2px;background:#00b4d8;display:inline-block"></span>Subtotal</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:2px;background:#1b2a4a;display:inline-block"></span>Resultado final</span>
+  </div>`;
+
+  items.forEach((d, i) => {
+    const color = colorMap[d.tipo];
+    const pct = Math.abs(d.v) * SCALE;
+    const sep = (d.tipo==='subtotal'||d.tipo==='final') ? 'border-top:2px solid #e5e8ef;margin-top:4px;padding-top:4px;' : '';
+    const fontW = (d.tipo==='inicio'||d.tipo==='subtotal'||d.tipo==='final') ? '700' : '500';
+    const lblColor = (d.tipo==='inicio'||d.tipo==='subtotal'||d.tipo==='final') ? '#1b2a4a' : '#555';
+    const sign = d.v > 0 ? '+' : '';
+
+    cont.innerHTML += `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;${sep}">
+      <div style="width:160px;font-size:10.5px;font-weight:${fontW};color:${lblColor};text-align:right;flex-shrink:0;line-height:1.3">${d.lbl}</div>
+      <div style="flex:1;height:18px;background:#f0f2f5;border-radius:3px;overflow:hidden;position:relative">
+        <div style="height:100%;width:${Math.max(pct,1.5)}%;background:${color};border-radius:3px;min-width:4px"></div>
+      </div>
+      <div style="width:60px;font-size:11px;font-weight:800;text-align:right;flex-shrink:0;color:${color}">${sign}${d.v.toFixed(2)}%</div>
+    </div>`;
+  });
+})();
+
+new Chart(document.getElementById('rentChart'),{
+  type:'bar',
+  data:{
+    labels:['Mg. Bruto','Mg. EBITDA','Mg. Operativo','Mg. Neto','ROA','ROE'],
+    datasets:[
+      {label:'2024', data:[D.mgBruto24,D.mgEbitda24,D.mgOp24,D.mgNeto24,D.roa24,D.roe24], backgroundColor:C.GRAY, borderRadius:3},
+      {label:'2025', data:[D.mgBruto25,D.mgEbitda25,D.mgOp25,D.mgNeto25,D.roa25,D.roe25],
+        backgroundColor:[C.GREEN,C.RED,C.RED,C.GREEN,C.GREEN,C.GREEN], borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toFixed(2)+'%'}}},
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:9.5},color:'#888'}},
+      y:{grid:{color:'#f0f2f5'},ticks:{font:{size:10},color:'#888',callback:v=>v+'%'}}
+    }
+  }
+});
+
+(function initSrcOverlay() {
+  const ov = document.getElementById('srcOverlay');
+  if (!ov) return;
+  let raf2 = null;
+
+  function pos2(x, y, el) {
+    const W = el.offsetWidth || 280, H = el.offsetHeight || 80, gap = 12;
+    let left = x - W / 2;
+    let top  = y - H - gap;
+    left = Math.max(8, Math.min(left, window.innerWidth  - W - 8));
+    top  = Math.max(8, Math.min(top,  window.innerHeight - H - 8));
+    el.style.left = left + 'px';
+    el.style.top  = top  + 'px';
+  }
+
+  function showSrc(el_target, text, x, y) {
+    ov.innerHTML = text;
+    ov.style.opacity = '1';
+    ov.style.transform = 'translateY(0)';
+    cancelAnimationFrame(raf2);
+    raf2 = requestAnimationFrame(() => pos2(x, y, ov));
+  }
+
+  function hideSrc() {
+    ov.style.opacity = '0';
+    ov.style.transform = 'translateY(4px)';
+  }
+
+  document.addEventListener('mouseover', function(e) {
+    
+    if (e.target.tagName === 'CANVAS' && e.target.dataset.tip) {
+      el.textContent = e.target.dataset.tip;
+      el.classList.add('show');
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = e.target.getBoundingClientRect();
+        position(r.left + r.width / 2, r.top + r.height / 2);
+      });
+      return;
+    }
+    
+    const badge = e.target.closest('.src-badge[data-src]');
+    if (badge) {
+      showSrc(badge,
+        '<span style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#00b4d8;display:block;margin-bottom:4px">📄 Fuente</span>' + badge.dataset.src,
+        badge.getBoundingClientRect().left + badge.getBoundingClientRect().width/2,
+        badge.getBoundingClientRect().top);
+      return;
+    }
+    
+    const gls = e.target.closest('.gls[data-gls]');
+    if (gls) {
+      showSrc(gls,
+        '<span style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#f59e0b;display:block;margin-bottom:4px">📖 Glosario</span>' + gls.dataset.gls,
+        gls.getBoundingClientRect().left + gls.getBoundingClientRect().width/2,
+        gls.getBoundingClientRect().top);
+      return;
+    }
+    
+    const srcEl = e.target.closest('[data-src]');
+    if (srcEl) {
+      showSrc(srcEl,
+        '<span style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#00b4d8;display:block;margin-bottom:4px">📄 Fuente del dato</span>' + srcEl.dataset.src,
+        srcEl.getBoundingClientRect().left + srcEl.getBoundingClientRect().width/2,
+        srcEl.getBoundingClientRect().top);
+      return;
+    }
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (ov.style.opacity === '0') return;
+    const active = e.target.closest('[data-src], [data-gls]');
+    if (!active) { hideSrc(); return; }
+    cancelAnimationFrame(raf2);
+    raf2 = requestAnimationFrame(() => {
+      const r = active.getBoundingClientRect();
+      pos2(r.left + r.width/2, r.top, ov);
+    });
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    const active = e.target.closest('[data-src], [data-gls]');
+    if (!active) return;
+    if (!active.contains(e.relatedTarget)) hideSrc();
+  });
+
+  document.addEventListener('scroll', () => hideSrc(), true);
+})();
+
+(function initTooltip() {
+  const el = document.getElementById('kpiTooltip');
+  let raf = null;
+
+  function position(x, y) {
+    
+    const W = el.offsetWidth || 240;
+    const H = el.offsetHeight || 60;
+    const gap = 14;
+    let left = x - W / 2;
+    let top  = y - H - gap;
+    // Clamp to viewport
+    left = Math.max(8, Math.min(left, window.innerWidth  - W - 8));
+    top  = Math.max(8, Math.min(top,  window.innerHeight - H - 8));
+    el.style.left = left + 'px';
+    el.style.top  = top  + 'px';
+  }
+
+  document.addEventListener('mouseover', function(e) {
+    const card = e.target.closest('[data-tip]');
+    if (!card) return;
+    el.textContent = card.dataset.tip;
+    el.classList.add('show');
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const r = card.getBoundingClientRect();
+      position(r.left + r.width / 2, r.top);
+    });
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!el.classList.contains('show')) return;
+    const card = e.target.closest('[data-tip]');
+    if (!card) return;
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const r = card.getBoundingClientRect();
+      position(r.left + r.width / 2, r.top);
+    });
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    const card = e.target.closest('[data-tip]');
+    if (!card) return;
+    
+    if (!card.contains(e.relatedTarget)) {
+      el.classList.remove('show');
+    }
+  });
+
+  
+  document.addEventListener('scroll', () => el.classList.remove('show'), true);
+})();
+
+buildKPIStrips();
+</script>
+</body>
+</html>
